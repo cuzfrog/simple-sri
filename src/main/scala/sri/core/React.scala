@@ -37,7 +37,7 @@ trait ReactElement extends js.Object {
   def ref: UndefOr[js.Function] = js.native
 }
 
-@ScalaJSDefined
+
 trait ReactClass extends js.Object {
   type PropsType
   type StateType
@@ -45,7 +45,6 @@ trait ReactClass extends js.Object {
   var childContextTypes: js.UndefOr[js.Any] = js.undefined
 }
 
-@ScalaJSDefined
 trait ReactScalaClass extends ReactClass {
   type ScalaPropsType
   type ScalaStateType
@@ -53,7 +52,6 @@ trait ReactScalaClass extends ReactClass {
   override type StateType = JSState { type ScalaState = ScalaStateType }
 }
 
-@ScalaJSDefined
 trait ReactScalaClassJS extends ReactClass {
 //  override type PropsType
   type ScalaStateType
@@ -722,12 +720,10 @@ abstract class ReactJSProps {
 /**
   * typed version of js.concstructorOf[ C <: ReactClass]
   */
-@ScalaJSDefined
 trait ComponentConstructor extends ReactClass {
   type ComponentType <: ReactClass
 }
 
-@ScalaJSDefined
 trait JSComponent[P] extends ComponentConstructor {
   override type ComponentType = this.type
   override type PropsType = P

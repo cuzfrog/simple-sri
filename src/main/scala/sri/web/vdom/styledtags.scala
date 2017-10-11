@@ -2,7 +2,6 @@ package sri.web.vdom
 
 import org.scalajs.dom
 import sri.web.vdom.styled.{StyledAttributes, StyledTags, SyntheticEventCallback}
-import sri.web.vdom.{ReactEventAliases, SyntheticEvent}
 
 import scala.language.implicitConversions
 import scala.scalajs.js
@@ -10,11 +9,11 @@ import scala.scalajs.js
 /**
   * Created by cuz on 17-4-26.
   */
-object styledtags extends StyledTags with StyledAttributes with ReactEventAliases with IntellijHelper {
+object tags extends StyledTags with StyledAttributes with ReactEventAliases with IntellijHelper {
   type SyntheticEventCallback = sri.web.vdom.styled.SyntheticEventCallback
 }
 
-object styledtagsPrefix_<^ extends ReactEventAliases with IntellijHelper {
+object tagsPrefix_<^ extends ReactEventAliases with IntellijHelper {
   type SyntheticEventCallback = sri.web.vdom.styled.SyntheticEventCallback
   object < extends StyledTags
   object ^ extends StyledAttributes

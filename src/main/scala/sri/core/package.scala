@@ -10,15 +10,13 @@ package object core {
 
   type ReactEmpty = Boolean | Null
 
-  type ReactNode = ReactElement | ReactText | js.Array[ReactElement] | js.Array[
-    String] | js.Array[Double]
+  type ReactNode = ReactElementNode | ReactText | js.Array[String] | js.Array[Double]
 
   type ReactElementNode = ReactElement | js.Array[ReactElement]
 
-  type ReactRenderNode =
-    String | ReactElement | js.Array[String] | js.Array[ReactElement]
+  type ReactRenderNode = String | js.Array[String] | ReactElementNode
 
-  @inline def emptyJSArray[A]() = js.Array[A]()
+  @inline def emptyJSArray[A](): js.Array[A] = js.Array[A]()
 
   @inline
   def componentConstructor[C <: ReactClass: js.ConstructorTag]
