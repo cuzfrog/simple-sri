@@ -1,0 +1,14 @@
+{
+  "name": "sri-test",
+  "version": "0.1.0",
+  "description": "sri test",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "scripts": {},
+  "devDependencies": {},
+  "dependencies": {
+    "jsdom": "11.3.0"
+  }
+}
