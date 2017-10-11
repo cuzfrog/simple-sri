@@ -11,26 +11,19 @@ val root = project.in(file("."))
     name := "sri",
     libraryDependencies ++= Seq(
       "org.scala-lang" % "scala-reflect" % scalaVersion.value % Provided,
-      "org.scala-js" %%% "scalajs-dom" % "0.9.3",
-      "org.scalatest" %%% "scalatest" % "3.0.1" % Test
+      "org.scala-js" %%% "scalajs-dom" % "0.9.3"
     )
   )
 
-val webtest = project.dependsOn(root)
+val tests = project.dependsOn(root)
   .enablePlugins(ScalaJSPlugin)
   .settings(Settings.commonSettings)
   .settings(
-    //webpackBundlingMode := BundlingMode.LibraryAndApplication(),
     scalaJSLinkerConfig ~= { _.withModuleKind(ModuleKind.CommonJSModule) },
     scalaJSUseMainModuleInitializer := true,
-    jsEnv := new org.scalajs.jsenv.jsdomnodejs.JSDOMNodeJSEnv()
-//    npmDependencies in Compile ++= Seq(
-//      "react" -> "15.6.1",
-//      "react-dom" -> "15.6.1",
-//      "jsdom" -> "11.3.0"
-//      //      "redux" -> "^3.6.0",
-//      //      "react-redux" -> "^5.0.3"
-//    ),
-//    version in webpack := "2.2.1",
-//    version in installWebpackDevServer := "2.4.1"
+    jsEnv := new org.scalajs.jsenv.jsdomnodejs.JSDOMNodeJSEnv(),
+    libraryDependencies ++= Seq(
+      "com.lihaoyi" %%% "utest" % "0.5.4" % Test
+    ),
+    testFrameworks += new TestFramework("utest.runner.Framework")
   )

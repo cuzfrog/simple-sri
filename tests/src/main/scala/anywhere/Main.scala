@@ -1,5 +1,6 @@
 package anywhere
 
+import anywhere.component.BasicInput
 import sri.web.ReactDOM
 import org.scalajs.dom
 

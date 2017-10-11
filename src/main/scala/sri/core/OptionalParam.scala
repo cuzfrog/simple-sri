@@ -6,8 +6,6 @@ import scala.scalajs.js.|.Evidence
 
 /**
   * https://github.com/scala-js/scala-js/issues/2714
-  *
-  * @tparam A
   */
 abstract sealed class OptionalParam[+A] {
   def foreach[U](f: A => U): Unit
@@ -17,8 +15,7 @@ case object OptDefault extends OptionalParam[Nothing] {
   def foreach[U](f: Nothing => U): Unit = ()
 }
 
-@inline final case class OptSpecified[+A](val get: A)
-  extends OptionalParam[A] {
+@inline final case class OptSpecified[+A](get: A) extends OptionalParam[A] {
   def foreach[U](f: A => U): Unit = f(get)
 }
 
@@ -41,5 +38,4 @@ sealed abstract class LowPriorityImplicits extends LowPriorityImplicits2 {
 
 object OptionalParam extends LowPriorityImplicits {
   implicit def specified[A](a: A): OptSpecified[A] = OptSpecified(a)
-
 }

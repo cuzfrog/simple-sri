@@ -1,10 +1,8 @@
 package sri.core
 
-import sri.core
-
 import scala.scalajs.js
-import scala.scalajs.js.annotation.{JSImport, JSName, ScalaJSDefined}
-import scala.scalajs.js.{UndefOr, undefined}
+import scala.scalajs.js.UndefOr
+import scala.scalajs.js.annotation.{JSImport, JSName}
 
 @js.native
 trait React extends js.Object {
@@ -14,8 +12,8 @@ trait React extends js.Object {
                     children: ReactNode*): ReactElement = js.native
 
   def cloneElement(element: ReactElement,
-                   props: js.Any = ???,
-                   children: js.Any = ???): ReactElement = js.native
+                   props: js.Any,
+                   children: js.Any): ReactElement = js.native
 
   def createFactory(tpe: js.Any): js.Any = js.native
 
@@ -37,7 +35,6 @@ trait ReactElement extends js.Object {
   def ref: UndefOr[js.Function] = js.native
 }
 
-
 trait ReactClass extends js.Object {
   type PropsType
   type StateType
@@ -48,14 +45,14 @@ trait ReactClass extends js.Object {
 trait ReactScalaClass extends ReactClass {
   type ScalaPropsType
   type ScalaStateType
-  override type PropsType = JSProps { type ScalaProps = ScalaPropsType }
-  override type StateType = JSState { type ScalaState = ScalaStateType }
+  override type PropsType = JSProps {type ScalaProps = ScalaPropsType}
+  override type StateType = JSState {type ScalaState = ScalaStateType}
 }
 
 trait ReactScalaClassJS extends ReactClass {
-//  override type PropsType
+  //  override type PropsType
   type ScalaStateType
-  override type StateType = JSState { type ScalaState = ScalaStateType }
+  override type StateType = JSState {type ScalaState = ScalaStateType}
 }
 
 @js.native
@@ -72,9 +69,9 @@ trait JSProps extends js.Object {
 
 object JSProps {
   @inline
-  def apply[P](scalaProps: P): JSProps { type ScalaProps = P } = {
+  def apply[P](scalaProps: P): JSProps {type ScalaProps = P} = {
     val p = js.Dynamic.literal("scalaProps" -> scalaProps.asInstanceOf[js.Any])
-    p.asInstanceOf[JSProps { type ScalaProps = P }]
+    p.asInstanceOf[JSProps {type ScalaProps = P}]
   }
 }
 
@@ -86,10 +83,9 @@ trait JSState extends js.Object {
 
 object JSState {
   @inline
-  def apply[S](scalaState: S) =
-    js.Dynamic
-      .literal("scalaState" -> scalaState.asInstanceOf[js.Any])
-      .asInstanceOf[JSState { type ScalaState = S }]
+  def apply[S](scalaState: S): JSState {type ScalaState = S} = js.Dynamic
+    .literal("scalaState" -> scalaState.asInstanceOf[js.Any])
+    .asInstanceOf[JSState {type ScalaState = S}]
 }
 
 @js.native
@@ -97,170 +93,20 @@ trait ReactChildren extends ReactElement {
 
   def map(children: js.Object,
           fn: js.Function1[js.Object, _]): js.UndefOr[js.Object] = js.native
-
   def forEach(children: js.Object, fn: js.Function1[js.Object, _]): Unit =
     js.native
-
   def count(children: js.Object): Int = js.native
-
   def only(children: js.Object): js.Object = js.native
-
 }
 
 @js.native
 @JSImport("react", "Component")
-abstract class ComponentRaw[P, S] extends ReactClass {
-
-  override type PropsType = P
-
-  override type StateType = S
-
-  def render(): ReactRenderNode
-
-  def props: P = js.native
-
-  var state: S = js.native
-
-  var refs: js.Dynamic = js.native
-
-  var context: js.Dynamic = js.native
-
-  def setState(newState: S, callback: UndefOr[() => _] = js.undefined): Unit =
-    js.native
-
-  def setState(func: js.Function2[S, P, S]): Unit = js.native
-
-  def forceUpdate(callback: js.Function = ???): Unit = js.native
-
-  def componentWillMount(): Unit = js.native
-
-  def componentDidMount(): Unit = js.native
-
-  def componentWillUnmount(): Unit = js.native
-
-  def componentWillReceiveProps(nextProps: P): Unit = js.native
-
-  def shouldComponentUpdate(nextProps: P, nextState: S): Boolean = js.native
-
-  def componentWillUpdate(nextProps: P, nextState: S): Unit = js.native
-
-  def componentDidUpdate(prevProps: P, prevState: S): Unit = js.native
-
-}
-
-@js.native
-@JSImport("react", "Component")
-private[sri] abstract class InternalComponentSecondary[P >: Null <: AnyRef,
-                                                       S >: Null <: AnyRef](
-    initialJSProps: JSProps { type ScalaProps = P })(
-    implicit ev: =:!=[P, Null])
-    extends ReactScalaClass {
-
-  override type ScalaPropsType = P
-
-  override type ScalaStateType = S
-
-  def render(): ReactRenderNode
-
-  @JSName("props") def jsProps: PropsType = js.native
-
-  @JSName("state") var jsState: StateType = js.native
-
-  var refs: js.Dynamic = js.native
-
-  var context: js.Dynamic = js.native
-  @JSName("setState")
-  def jsSetState(func: js.Function2[StateType, PropsType, StateType]): Unit =
-    js.native
-
-  def forceUpdate(callback: js.Function = ???): Unit = js.native
-
-  def componentWillMount(): Unit = js.native
-
-  def componentDidMount(): Unit = js.native
-
-  def componentWillUnmount(): Unit = js.native
-
-  def componentWillReceiveProps(nextJSProps: JSProps { type ScalaProps = P })
-    : Unit = js.native
-
-  def shouldComponentUpdate(nextJSProps: JSProps { type ScalaProps = P }, nextJSState: JSState {
-    type ScalaState = S
-  }): Boolean =
-    js.native
-
-  def componentWillUpdate(nextJSProps: JSProps { type ScalaProps = P }, nextJSState: JSState {
-    type ScalaState = S
-  }): Unit =
-    js.native
-
-  def componentDidUpdate(prevJSProps: JSProps { type ScalaProps = P }, nextJSState: JSState {
-    type ScalaState = S
-  }): Unit =
-    js.native
-
-}
-
-abstract class ComponentSecondary[P >: Null <: AnyRef, S >: Null <: AnyRef](
-    initialProps: JSProps { type ScalaProps = P })(implicit ev: =:!=[P, Null],
-                                                   ev1: =:!=[S, Null])
-    extends InternalComponentSecondary[P, S](initialProps)
-    with ReactScalaClass {
-
-  if (js.isUndefined(jsState) || jsState == null) {
-    jsState = JSState(null).asInstanceOf[StateType]
-  }
-
-  @JSName("scalaProps")
-  def props: P = jsProps.scalaProps
-
-  @JSName("scalaState")
-  def state: S = jsState.scalaState
-
-  @inline
-  def propsDynamic = jsProps.asInstanceOf[js.Dynamic]
-
-  @inline
-  def children: ReactNode = jsProps.children
-
-  @inline
-  def initialState(s: S): Unit = {
-    jsState = JSState(s)
-  }
-
-  @JSName("setStateFromStateAndProps")
-  @inline
-  def setState(func: js.Function2[S, P, S]): Unit = {
-    jsSetState((s: StateType, p: PropsType) =>
-      JSState(func(s.scalaState, p.scalaProps)))
-  }
-
-  @JSName("setStateFromState")
-  @inline
-  def setState(func: js.Function1[S, S]): Unit = {
-    jsSetState((s: StateType, p: PropsType) => JSState(func(s.scalaState)))
-  }
-
-  @inline
-  def getRef[T](name: String, cls: Class[T]) = {
-    refs.selectDynamic(name).asInstanceOf[T]
-  }
-
-  override def shouldComponentUpdate(nextJSProps: JSProps {
-    type ScalaProps = P
-  }, nextJSState: JSState { type ScalaState = S }): Boolean = {
-
-    (nextJSProps.scalaProps ne props) || (nextJSState.scalaState ne state)
-
-  }
-
-}
+sealed abstract class ReactComponent extends js.Object
 
 @js.native
 @JSImport("react", "Component")
 private[sri] abstract class InternalComponent[P <: AnyRef, S <: AnyRef]
-    extends js.Object
-    with ReactScalaClass {
+  extends ReactComponent with ReactScalaClass {
 
   override type ScalaPropsType = P
 
@@ -278,7 +124,7 @@ private[sri] abstract class InternalComponent[P <: AnyRef, S <: AnyRef]
   def jsSetState(func: js.Function2[StateType, PropsType, StateType]): Unit =
     js.native
 
-  def forceUpdate(callback: js.Function = ???): Unit = js.native
+  def forceUpdate(callback: js.Function): Unit = js.native
 
   def render(): ReactRenderNode
 
@@ -288,31 +134,29 @@ private[sri] abstract class InternalComponent[P <: AnyRef, S <: AnyRef]
 
   def componentWillUnmount(): Unit = js.native
 
-  def componentWillReceiveProps(nextJSProps: JSProps { type ScalaProps = P })
-    : Unit = js.native
+  def componentWillReceiveProps(nextJSProps: JSProps {type ScalaProps = P})
+  : Unit = js.native
 
-  def shouldComponentUpdate(nextJSProps: JSProps { type ScalaProps = P }, nextJSState: JSState {
+  def shouldComponentUpdate(nextJSProps: JSProps {type ScalaProps = P}, nextJSState: JSState {
     type ScalaState = S
   }): Boolean =
     js.native
 
-  def componentWillUpdate(nextJSProps: JSProps { type ScalaProps = P }, nextJSState: JSState {
+  def componentWillUpdate(nextJSProps: JSProps {type ScalaProps = P}, nextJSState: JSState {
     type ScalaState = S
   }): Unit =
     js.native
 
-  def componentDidUpdate(prevJSProps: JSProps { type ScalaProps = P }, nextJSState: JSState {
+  def componentDidUpdate(prevJSProps: JSProps {type ScalaProps = P}, nextJSState: JSState {
     type ScalaState = S
   }): Unit =
     js.native
 
 }
 
-abstract class Component[P >: Null <: AnyRef, S >: Null <: AnyRef](
-    implicit ev: =:!=[P, Null],
-    ev2: =:!=[S, Null])
-    extends InternalComponent[P, S]
-    with ReactScalaClass {
+abstract class Component[P >: Null <: AnyRef, S >: Null <: AnyRef](implicit ev: =:!=[P, Null],
+                                                                   ev2: =:!=[S, Null])
+  extends InternalComponent[P, S] with ReactScalaClass{
 
   if (js.isUndefined(jsState) || jsState == null) {
     jsState = JSState(null).asInstanceOf[StateType]
@@ -327,7 +171,7 @@ abstract class Component[P >: Null <: AnyRef, S >: Null <: AnyRef](
   def state: S = jsState.scalaState
 
   @inline
-  def propsDynamic = jsProps.asInstanceOf[js.Dynamic]
+  def propsDynamic: js.Dynamic = jsProps.asInstanceOf[js.Dynamic]
 
   @inline
   def children: ReactNode = jsProps.children
@@ -351,13 +195,13 @@ abstract class Component[P >: Null <: AnyRef, S >: Null <: AnyRef](
   }
 
   @inline
-  def getRef[T](name: String, cls: Class[T]) = {
+  def getRef[T](name: String, cls: Class[T]): T = {
     refs.selectDynamic(name).asInstanceOf[T]
   }
 
   override def shouldComponentUpdate(nextJSProps: JSProps {
     type ScalaProps = P
-  }, nextJSState: JSState { type ScalaState = S }): Boolean = {
+  }, nextJSState: JSState {type ScalaState = S}): Boolean = {
 
     (nextJSProps.scalaProps ne props) || (nextJSState.scalaState ne state)
 
@@ -368,18 +212,18 @@ abstract class Component[P >: Null <: AnyRef, S >: Null <: AnyRef](
 @js.native
 @JSImport("react", "Component")
 private[sri] abstract class InternalComponentP[P <: AnyRef]
-    extends js.Object
-    with ReactScalaClass {
+  extends ReactComponent with ReactScalaClass {
 
   override type ScalaPropsType = P
 
-  @JSName("props") def jsProps: PropsType = js.native
+  @JSName("props")
+  def jsProps: PropsType = js.native
 
   var refs: js.Dynamic = js.native
 
   var context: js.Dynamic = js.native
 
-  def forceUpdate(callback: js.Function = ???): Unit = js.native
+  def forceUpdate(callback: js.Function): Unit = js.native
 
   def render(): ReactRenderNode
 
@@ -389,24 +233,23 @@ private[sri] abstract class InternalComponentP[P <: AnyRef]
 
   def componentWillUnmount(): Unit = js.native
 
-  def componentWillReceiveProps(nextJSProps: JSProps { type ScalaProps = P })
-    : Unit = js.native
+  def componentWillReceiveProps(nextJSProps: JSProps {type ScalaProps = P})
+  : Unit = js.native
 
-  def shouldComponentUpdate(nextJSProps: JSProps { type ScalaProps = P })
-    : Boolean =
+  def shouldComponentUpdate(nextJSProps: JSProps {type ScalaProps = P})
+  : Boolean =
     js.native
 
-  def componentWillUpdate(nextJSProps: JSProps { type ScalaProps = P }): Unit =
+  def componentWillUpdate(nextJSProps: JSProps {type ScalaProps = P}): Unit =
     js.native
 
-  def componentDidUpdate(prevJSProps: JSProps { type ScalaProps = P }): Unit =
+  def componentDidUpdate(prevJSProps: JSProps {type ScalaProps = P}): Unit =
     js.native
 
 }
 
 abstract class ComponentP[P >: Null <: AnyRef](implicit ev: =:!=[P, Null])
-    extends InternalComponentP[P]
-    with ReactScalaClass {
+  extends InternalComponentP[P] with ReactScalaClass {
 
   @JSName("scalaProps")
   @inline
@@ -416,7 +259,7 @@ abstract class ComponentP[P >: Null <: AnyRef](implicit ev: =:!=[P, Null])
   def children: ReactNode = jsProps.children
 
   @inline
-  def getRef[T](name: String, cls: Class[T]) = {
+  def getRef[T](name: String, cls: Class[T]): T = {
     refs.selectDynamic(name).asInstanceOf[T]
   }
 
@@ -430,8 +273,7 @@ abstract class ComponentP[P >: Null <: AnyRef](implicit ev: =:!=[P, Null])
 @js.native
 @JSImport("react", "Component")
 private[sri] abstract class InternalComponentS[S <: AnyRef]
-    extends js.Object
-    with ReactScalaClass {
+  extends ReactComponent with ReactScalaClass {
 
   override type ScalaPropsType = Null
 
@@ -449,7 +291,7 @@ private[sri] abstract class InternalComponentS[S <: AnyRef]
   def jsSetState(func: js.Function1[StateType, StateType]): Unit =
     js.native
 
-  def forceUpdate(callback: js.Function = ???): Unit = js.native
+  def forceUpdate(callback: js.Function): Unit = js.native
 
   def render(): ReactRenderNode
 
@@ -459,17 +301,17 @@ private[sri] abstract class InternalComponentS[S <: AnyRef]
 
   def componentWillUnmount(): Unit = js.native
 
-  def shouldComponentUpdate(nextJSProps: JSProps { type ScalaProps = Null }, nextJSState: JSState {
+  def shouldComponentUpdate(nextJSProps: JSProps {type ScalaProps = Null}, nextJSState: JSState {
     type ScalaState = S
   }): Boolean =
     js.native
 
-  def componentWillUpdate(nextJSProps: JSProps { type ScalaProps = Null }, nextJSState: JSState {
+  def componentWillUpdate(nextJSProps: JSProps {type ScalaProps = Null}, nextJSState: JSState {
     type ScalaState = S
   }): Unit =
     js.native
 
-  def componentDidUpdate(prevJSProps: JSProps { type ScalaProps = Null }, nextJSState: JSState {
+  def componentDidUpdate(prevJSProps: JSProps {type ScalaProps = Null}, nextJSState: JSState {
     type ScalaState = S
   }): Unit =
     js.native
@@ -477,8 +319,7 @@ private[sri] abstract class InternalComponentS[S <: AnyRef]
 }
 
 abstract class ComponentS[S >: Null <: AnyRef](implicit ev: =:!=[S, Null])
-    extends InternalComponentS[S]
-    with ReactScalaClass {
+  extends InternalComponentS[S] with ReactScalaClass {
 
   if (js.isUndefined(jsState) || jsState == null) {
     jsState = js.Dictionary[Any]("scala" -> null).asInstanceOf[StateType]
@@ -503,13 +344,13 @@ abstract class ComponentS[S >: Null <: AnyRef](implicit ev: =:!=[S, Null])
   }
 
   @inline
-  def getRef[T](name: String, cls: Class[T]) = {
+  def getRef[T](name: String, cls: Class[T]): T = {
     refs.selectDynamic(name).asInstanceOf[T]
   }
 
   override def shouldComponentUpdate(nextJSProps: JSProps {
     type ScalaProps = Null
-  }, nextJSState: JSState { type ScalaState = S }): Boolean = {
+  }, nextJSState: JSState {type ScalaState = S}): Boolean = {
     state ne nextJSState.scalaState
   }
 }
@@ -517,8 +358,7 @@ abstract class ComponentS[S >: Null <: AnyRef](implicit ev: =:!=[S, Null])
 @js.native
 @JSImport("react", "Component")
 private[sri] abstract class InternalComponentJS[P <: js.Object, S <: AnyRef]
-    extends js.Object
-    with ReactScalaClassJS {
+  extends ReactComponent with ReactScalaClassJS {
 
   override type PropsType = P
 
@@ -536,7 +376,7 @@ private[sri] abstract class InternalComponentJS[P <: js.Object, S <: AnyRef]
   def jsSetState(func: js.Function2[StateType, PropsType, StateType]): Unit =
     js.native
 
-  def forceUpdate(callback: js.Function = ???): Unit = js.native
+  def forceUpdate(callback: js.Function): Unit = js.native
 
   def render(): ReactRenderNode
 
@@ -568,8 +408,7 @@ private[sri] abstract class InternalComponentJS[P <: js.Object, S <: AnyRef]
 @js.native
 @JSImport("react", "Component")
 private[sri] abstract class InternalComponentJSP[P <: AnyRef]
-    extends js.Object
-    with ReactScalaClassJS {
+  extends ReactComponent with ReactScalaClassJS {
 
   override type PropsType = P
 
@@ -579,7 +418,7 @@ private[sri] abstract class InternalComponentJSP[P <: AnyRef]
 
   var context: js.Dynamic = js.native
 
-  def forceUpdate(callback: js.Function = ???): Unit = js.native
+  def forceUpdate(callback: js.Function): Unit = js.native
 
   def render(): ReactRenderNode
 
@@ -603,7 +442,7 @@ private[sri] abstract class InternalComponentJSP[P <: AnyRef]
 }
 
 abstract class ComponentJS[P <: js.Object, S <: AnyRef]
-    extends InternalComponentJS[P, S] {
+  extends InternalComponentJS[P, S] {
 
   if (js.isUndefined(jsState) || jsState == null) {
     jsState = JSState(null).asInstanceOf[StateType]
@@ -635,26 +474,25 @@ abstract class ComponentJS[P <: js.Object, S <: AnyRef]
   }
 
   @inline
-  def getRef[T](name: String, cls: Class[T]) = {
+  def getRef[T](name: String, cls: Class[T]): T = {
     refs.selectDynamic(name).asInstanceOf[T]
   }
 
 }
 
-abstract class ComponentNotPure[P >: Null <: AnyRef, S >: Null <: AnyRef](
-    implicit ev: =:!=[P, Null],
-    ev2: =:!=[S, Null])
-    extends Component[P, S] {
+abstract class ComponentNotPure[P >: Null <: AnyRef, S >: Null <: AnyRef](implicit ev: =:!=[P, Null],
+                                                                          ev2: =:!=[S, Null])
+  extends Component[P, S] {
   override def shouldComponentUpdate(nextJSProps: JSProps {
     type ScalaProps = P
-  }, nextJSState: JSState { type ScalaState = S }): Boolean = {
+  }, nextJSState: JSState {type ScalaState = S}): Boolean = {
     true
   }
 }
 
 abstract class ComponentNotPureP[P >: Null <: AnyRef](
-    implicit ev: =:!=[P, Null])
-    extends ComponentP[P] {
+                                                       implicit ev: =:!=[P, Null])
+  extends ComponentP[P] {
   override def shouldComponentUpdate(nextJSProps: JSProps {
     type ScalaProps = P
   }): Boolean = {
@@ -663,11 +501,11 @@ abstract class ComponentNotPureP[P >: Null <: AnyRef](
 }
 
 abstract class ComponentNotPureS[S >: Null <: AnyRef](
-    implicit ev2: =:!=[S, Null])
-    extends ComponentS[S] {
+                                                       implicit ev2: =:!=[S, Null])
+  extends ComponentS[S] {
   override def shouldComponentUpdate(nextJSProps: JSProps {
     type ScalaProps = Null
-  }, nextJSState: JSState { type ScalaState = S }): Boolean = {
+  }, nextJSState: JSState {type ScalaState = S}): Boolean = {
     true
   }
 }
@@ -675,8 +513,7 @@ abstract class ComponentNotPureS[S >: Null <: AnyRef](
 @js.native
 @JSImport("react", "Component")
 private[sri] abstract class InternalComponentNoPS
-    extends js.Object
-    with ReactScalaClass {
+  extends ReactComponent with ReactScalaClass {
 
   override type ScalaPropsType = Null
 
@@ -686,7 +523,7 @@ private[sri] abstract class InternalComponentNoPS
 
   var context: js.Dynamic = js.native
 
-  def forceUpdate(callback: js.Function = ???): Unit = js.native
+  def forceUpdate(callback: js.Function): Unit = js.native
 
   def render(): ReactRenderNode
 
@@ -718,8 +555,8 @@ abstract class ReactJSProps {
 }
 
 /**
-  * typed version of js.concstructorOf[ C <: ReactClass]
-  */
+ * typed version of js.concstructorOf[ C <: ReactClass]
+ */
 trait ComponentConstructor extends ReactClass {
   type ComponentType <: ReactClass
 }
