@@ -3,11 +3,11 @@ package sri.redux
 import scala.scalajs.js
 
 @js.native
-trait Store[T] extends js.Object {
+sealed trait Store[S, A] extends js.Object {
 
-  def getState(): T = js.native
+  def getState(): S = js.native
 
-  def dispatch(action: js.Object): js.Object = js.native
+  def dispatch(action: A): A = js.native
 
   def subscribe(listener: js.Function): js.Function = js.native
 

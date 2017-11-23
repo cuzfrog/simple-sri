@@ -1,8 +1,7 @@
 package anywhere.component
 
-import anywhere.State
+import anywhere.Store
 import sri.core.{ComponentP, CreateElement, ReactElement, ReactRenderNode}
-import sri.redux.Store
 import sri.web.vdom.tagsPrefix_<^._
 
 class ListView extends ComponentP[ListView.Props] {
@@ -16,8 +15,8 @@ class ListView extends ComponentP[ListView.Props] {
 }
 
 object ListView {
-  case class Props(implicit store: Store) {
-    val elements = store.getState().filteredElements
+  class Props(store: Store) {
+    val elements: Seq[String] = store.getState().filteredElements
   }
-  def apply()(implicit store: Store): ReactElement = CreateElement[ListView](Props())
+  def apply()(implicit store: Store): ReactElement = CreateElement[ListView](new Props(store))
 }

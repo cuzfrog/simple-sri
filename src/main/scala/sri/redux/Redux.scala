@@ -1,7 +1,7 @@
 package sri.redux
 
 import scala.scalajs.js
-import scala.scalajs.js.annotation.{JSImport, ScalaJSDefined}
+import scala.scalajs.js.annotation.JSImport
 import scala.scalajs.js.|
 
 @JSImport("redux", JSImport.Namespace)
@@ -10,7 +10,7 @@ private object ReduxJS extends js.Object {
 
   def createStore[S, A](reducer: js.Function,
                         initialState: S = js.undefined,
-                        enhancer: js.Function = ???): Store[S] = js.native
+                        enhancer: js.Function = ???): Store[S, A] = js.native
 
   def combineReducers(reducers: js.Dictionary[js.Function]): js.Function = js.native
 
@@ -23,9 +23,10 @@ private object ReduxJS extends js.Object {
 }
 
 object Redux {
+  @inline
   def createStore[S, A](reducer: Function2[S, A, S],
                         initialState: S = js.undefined,
-                        enhancer: js.UndefOr[js.Function] = js.undefined): Store[S] = {
+                        enhancer: js.UndefOr[js.Function] = js.undefined): Store[S, A] = {
     val wrappedReducer: (S, |[A, js.Object]) => S = (s: S, a: A | js.Object) => {
       val aDyn = a.asInstanceOf[js.Dynamic]
       if (aDyn.`type`.asInstanceOf[String] == WrappedAction.ActionType) {
@@ -37,12 +38,12 @@ object Redux {
     ReduxJS.createStore(wrappedReducer, initialState)
   }
 
-  trait WrappedAction extends js.Object {
+  private trait WrappedAction extends js.Object {
     val `type`: String
     val scalaJsReduxAction: js.Any
   }
 
-  object WrappedAction {
+  private object WrappedAction {
     val ActionType = "scalaJsReduxAction"
     def apply[A](a: A): WrappedAction = js.Dynamic.literal(
       `type` = ActionType,
