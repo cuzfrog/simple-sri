@@ -156,7 +156,7 @@ private[sri] abstract class InternalComponent[P <: AnyRef, S <: AnyRef]
 
 abstract class Component[P >: Null <: AnyRef, S >: Null <: AnyRef](implicit ev: =:!=[P, Null],
                                                                    ev2: =:!=[S, Null])
-  extends InternalComponent[P, S] with ReactScalaClass{
+  extends InternalComponent[P, S] with ReactScalaClass {
 
   if (js.isUndefined(jsState) || jsState == null) {
     jsState = JSState(null).asInstanceOf[StateType]
@@ -233,18 +233,13 @@ private[sri] abstract class InternalComponentP[P <: AnyRef]
 
   def componentWillUnmount(): Unit = js.native
 
-  def componentWillReceiveProps(nextJSProps: JSProps {type ScalaProps = P})
-  : Unit = js.native
+  def componentWillReceiveProps(nextJSProps: JSProps {type ScalaProps = P}): Unit = js.native
 
-  def shouldComponentUpdate(nextJSProps: JSProps {type ScalaProps = P})
-  : Boolean =
-    js.native
+  def shouldComponentUpdate(nextJSProps: JSProps {type ScalaProps = P}): Boolean = js.native
 
-  def componentWillUpdate(nextJSProps: JSProps {type ScalaProps = P}): Unit =
-    js.native
+  def componentWillUpdate(nextJSProps: JSProps {type ScalaProps = P}): Unit = js.native
 
-  def componentDidUpdate(prevJSProps: JSProps {type ScalaProps = P}): Unit =
-    js.native
+  def componentDidUpdate(prevJSProps: JSProps {type ScalaProps = P}): Unit = js.native
 
 }
 
