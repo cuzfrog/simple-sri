@@ -6,6 +6,7 @@ import sri.web.vdom.tagsPrefix_<^._
 
 class FilterInput extends ComponentP[FilterInput.Props] {
   override def render() = {
+    println(s"filter input rendered with value: ${props.value}")
     <.input(
       ^.value := props.value,
       ^.onChange := props.onChange
@@ -15,8 +16,9 @@ class FilterInput extends ComponentP[FilterInput.Props] {
 
 object FilterInput {
   class Props(store: Store) {
-    val value: String = store.getState().filterValue
-    val onChange: ReactEventI => Action = (event: ReactEventI) => {
+    def value: String = store.getState.filterValue
+    def onChange: ReactEventI => Unit = (event: ReactEventI) => {
+      event.defaultPrevented
       store.dispatch(FilterChange(event.target.value))
     }
   }

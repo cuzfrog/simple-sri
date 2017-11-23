@@ -10,7 +10,7 @@ private object ReduxJS extends js.Object {
 
   def createStore[S, A](reducer: js.Function,
                         initialState: S = js.undefined,
-                        enhancer: js.Function = ???): Store[S, A] = js.native
+                        enhancer: js.Function = ???): StoreJS[S] = js.native
 
   def combineReducers(reducers: js.Dictionary[js.Function]): js.Function = js.native
 
@@ -35,20 +35,8 @@ object Redux {
       else s
     }
 
-    ReduxJS.createStore(wrappedReducer, initialState)
-  }
-
-  private trait WrappedAction extends js.Object {
-    val `type`: String
-    val scalaJsReduxAction: js.Any
-  }
-
-  private object WrappedAction {
-    val ActionType = "scalaJsReduxAction"
-    def apply[A](a: A): WrappedAction = js.Dynamic.literal(
-      `type` = ActionType,
-      scalaJsReduxAction = a.asInstanceOf[js.Any]
-    ).asInstanceOf[WrappedAction]
+    val storeJS = ReduxJS.createStore[S, A](wrappedReducer, initialState)
+    new Store[S, A](storeJS)
   }
 }
 

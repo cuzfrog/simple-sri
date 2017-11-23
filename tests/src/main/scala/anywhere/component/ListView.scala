@@ -16,7 +16,7 @@ class ListView extends ComponentP[ListView.Props] {
 
 object ListView {
   class Props(store: Store) {
-    val elements: Seq[String] = store.getState().filteredElements
+    def elements: Seq[String] = store.getState.filteredElements
   }
   def apply()(implicit store: Store): ReactElement = CreateElement[ListView](new Props(store))
 }
