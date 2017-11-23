@@ -22,6 +22,6 @@ object FilterInput {
       store.dispatch(FilterChange(event.target.value))
     }
   }
-
+  
   def apply()(implicit store: Store): ReactElement = CreateElement[FilterInput](new Props(store))
 }

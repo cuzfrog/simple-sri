@@ -24,9 +24,9 @@ final class Store[S, A](storeJS: StoreJS[S]) {
       .asInstanceOf[WrappedAction].scalaJsReduxAction.asInstanceOf[A]
   }
 
-  def dispatchAsync(action: A): Promise[A] = {
-    val promise = Promise[A]()
-    storeJS.dispatch(promise.asInstanceOf[js.Object])
-    promise.success(action)
-  }
+//  def dispatchAsync(action: A): Promise[A] = {
+//    val promise = Promise[A]()
+//    storeJS.dispatch(promise.asInstanceOf[js.Object])
+//    promise.success(action)
+//  }
 }
