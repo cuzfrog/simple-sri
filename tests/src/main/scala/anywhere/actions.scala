@@ -1,5 +1,5 @@
 package anywhere
 
-sealed trait Action
+import diode.Action
 
 case class FilterChange(v: String) extends Action

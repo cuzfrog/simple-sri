@@ -1,11 +1,11 @@
 package anywhere.component
 
-import anywhere.{Action, FilterChange, Store}
-import sri.core.{ComponentP, CreateElement, ReactElement}
+import anywhere.{AppCircuit, FilterChange}
+import sri.core.{ComponentP, CreateElement, ReactElement, ReactRenderNode}
 import sri.web.vdom.tagsPrefix_<^._
 
 class FilterInput extends ComponentP[FilterInput.Props] {
-  override def render() = {
+  override def render(): ReactRenderNode = {
     println(s"filter input rendered with value: ${props.value}")
     <.input(
       ^.value := props.value,
@@ -15,13 +15,18 @@ class FilterInput extends ComponentP[FilterInput.Props] {
 }
 
 object FilterInput {
-  class Props(store: Store) {
-    def value: String = store.getState.filterValue
-    def onChange: ReactEventI => Unit = (event: ReactEventI) => {
-      event.defaultPrevented
-      store.dispatch(FilterChange(event.target.value))
+  case class Props(value: String, onChange: ReactEventI => Unit)
+
+  def apply(): ReactElement = {
+    AppCircuit.wrap(_.filterModel) { proxy =>
+      def value: String = proxy().filterValue
+      val onChange: ReactEventI => Unit = (event: ReactEventI) => {
+        val v = event.target.value
+        println(s"filter input event! $v | $value")
+        event.defaultPrevented
+        proxy.dispatchNow(FilterChange(v))
+      }
+      CreateElement[FilterInput](Props(value, onChange))
     }
   }
-  
-  def apply()(implicit store: Store): ReactElement = CreateElement[FilterInput](new Props(store))
 }

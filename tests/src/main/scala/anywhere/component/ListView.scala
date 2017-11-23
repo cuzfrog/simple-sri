@@ -1,6 +1,6 @@
 package anywhere.component
 
-import anywhere.Store
+import anywhere.AppCircuit
 import sri.core.{ComponentP, CreateElement, ReactElement, ReactRenderNode}
 import sri.web.vdom.tagsPrefix_<^._
 
@@ -15,8 +15,11 @@ class ListView extends ComponentP[ListView.Props] {
 }
 
 object ListView {
-  class Props(store: Store) {
-    def elements: Seq[String] = store.getState.filteredElements
+
+  case class Props(elements: Seq[String])
+
+  def apply(): ReactElement = {
+    AppCircuit.wrap(_.filterModel.filteredElements)(proxy =>
+      CreateElement[ListView](Props(proxy.apply())))
   }
-  def apply()(implicit store: Store): ReactElement = CreateElement[ListView](new Props(store))
 }
