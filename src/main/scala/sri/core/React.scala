@@ -225,7 +225,7 @@ private[sri] abstract class InternalComponentP[P <: AnyRef]
 
   def forceUpdate(callback: js.Function): Unit = js.native
 
-  def render(): ReactRenderNode
+  protected def render(): ReactRenderNode
 
   def componentWillMount(): Unit = js.native
 

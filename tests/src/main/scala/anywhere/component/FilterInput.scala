@@ -24,7 +24,7 @@ object FilterInput {
         val v = event.target.value
         println(s"filter input event! $v | $value")
         event.defaultPrevented
-        proxy.dispatchNow(FilterChange(v))
+        proxy.dispatch(FilterChange(v))
       }
       CreateElement[FilterInput](Props(value, onChange))
     }

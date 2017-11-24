@@ -34,7 +34,7 @@ val tests = project.dependsOn(root, `sri-diode-connector`)
     jsEnv := new org.scalajs.jsenv.jsdomnodejs.JSDOMNodeJSEnv(),
     libraryDependencies ++= Seq(
       "io.suzaku" %%% "diode" % "1.1.2",
-      "com.lihaoyi" %%% "utest" % "0.5.4" % Test
+      "com.lihaoyi" %%% "utest" % "0.6.0" % Test
     ),
     testFrameworks += new TestFramework("utest.runner.Framework")
   )
