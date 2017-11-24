@@ -1,6 +1,6 @@
 package anywhere.component
 
-import sri.core.{ComponentP, CreateElement, ReactElement, ReactRenderNode}
+import sri.core.{ComponentP, ComponentS, CreateElement, ReactElement, ReactRenderNode}
 import sri.web.vdom.tagsPrefix_<^._
 
 class FilterList extends ComponentP[FilterList.Props] {

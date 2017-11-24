@@ -7,8 +7,8 @@ import sri.web.vdom.tagsPrefix_<^._
 class ListView extends ComponentP[ListView.Props] {
   override def render(): ReactRenderNode = {
     <.ul()(
-      props.elements.map { v =>
-        <.li()(v)
+      props.elements.zipWithIndex.map { case (v, i) =>
+        <.li(^.key := i)(v)
       }: _*
     )
   }
@@ -19,7 +19,7 @@ object ListView {
   case class Props(elements: Seq[String])
 
   def apply(): ReactElement = {
-    AppCircuit.wrap(_.filterModel.filteredElements)(proxy =>
+    AppCircuit.connect(_.filterModel.filteredElements)(proxy =>
       CreateElement[ListView](Props(proxy.apply())))
   }
 }

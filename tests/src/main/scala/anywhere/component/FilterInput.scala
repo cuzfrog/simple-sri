@@ -18,7 +18,7 @@ object FilterInput {
   case class Props(value: String, onChange: ReactEventI => Unit)
 
   def apply(): ReactElement = {
-    AppCircuit.wrap(_.filterModel) { proxy =>
+    AppCircuit.connect(_.filterModel) { proxy =>
       def value: String = proxy().filterValue
       val onChange: ReactEventI => Unit = (event: ReactEventI) => {
         val v = event.target.value
