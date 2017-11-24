@@ -8,14 +8,24 @@ val root = project.in(file("."))
   .enablePlugins(ScalaJSPlugin)
   .settings(Settings.commonSettings)
   .settings(
-    name := "sri",
+    name := "simple-sri",
     libraryDependencies ++= Seq(
       "org.scala-lang" % "scala-reflect" % scalaVersion.value % Provided,
       "org.scala-js" %%% "scalajs-dom" % "0.9.3"
     )
   )
 
-val tests = project.dependsOn(root)
+val `sri-diode-connector` = project.dependsOn(root)
+  .enablePlugins(ScalaJSPlugin)
+  .settings(Settings.commonSettings)
+  .settings(
+    name := "simple-sri-diode",
+    libraryDependencies ++= Seq(
+      "io.suzaku" %%% "diode" % "1.1.2" % Provided
+    )
+  )
+
+val tests = project.dependsOn(root, `sri-diode-connector`)
   .enablePlugins(ScalaJSPlugin)
   .settings(Settings.commonSettings)
   .settings(
