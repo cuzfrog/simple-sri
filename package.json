@@ -24,5 +24,9 @@
     "react": "^16.1.1",
     "react-dom": "^16.1.1",
     "react-test-renderer": "^16.1.1"
+  },
+  "jest": {
+    "verbose": true,
+    "setupFiles": ["./tests/public/shim.js"]
   }
 }
