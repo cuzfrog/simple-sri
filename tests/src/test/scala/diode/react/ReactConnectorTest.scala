@@ -20,17 +20,18 @@ object ReactConnectorTest extends JestSuite {
 
 
   test("testConnect") {
-    val connectedComponent = TestCircuit.connect(_.subModel) { proxy =>
+    val connectedElement = TestCircuit.connect(_.subModel) { proxy =>
       val increment = () => proxy.dispatch(Increment(1))
       val decrement = () => proxy.dispatch(Decrement(1))
       val reset = () => proxy.dispatch(Reset)
       CreateElement[TestComponent](TestProps(proxy.value, increment, decrement, reset))
     }
-    val props = TestRenderer.create(connectedComponent).root.props
+    val testInstance = TestRenderer.create(connectedElement).root
+
     //ReactTestUtils.Simulate.keyPress(component.firstChild, incrementKey)
-    console.log(props)
+    //console.log(props)
     val modelValue = TestCircuit.model.subModel.v1
-    assert(modelValue == 0)
+    assert(modelValue == 1)
   }
 
 
@@ -51,7 +52,7 @@ object ReactConnectorTest extends JestSuite {
       override protected def handle = {
         case Increment(v) => updated(value.copy(v1 = value.v1 + 1, lastAction = "increment"))
         case Decrement(v) => updated(value.copy(v1 = value.v1 - 1, lastAction = "decrement"))
-        case Reset => updated(SubModel(lastAction = "increment"))
+        case Reset => updated(SubModel(lastAction = "reset"))
       }
     }
 
@@ -64,10 +65,21 @@ object ReactConnectorTest extends JestSuite {
                                reset: () => Unit)
 
   private class TestComponent extends ComponentP[TestProps] {
-    override protected def render() = <.div()(
+    override protected def render() = <.div(
+      ^.onKeyPress := eventHandler
+    )(
       <.div()(s"current value: ${props.v.v1}"),
       <.div()(s"last action: ${props.v.lastAction}")
     )
+
+    private val eventHandler = (event: ReactKeyboardEventI) => {
+      event.key match{
+        case "i" => props.increment()
+        case "d" => props.decrement()
+        case "r" => props.reset()
+        case _ => //ignore
+      }
+    }
   }
 
   implicit def toDom(reactElement: ReactComponent): dom.Node = {

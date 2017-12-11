@@ -1,7 +1,6 @@
 package sri
 
 import scala.scalajs.js
-import scala.scalajs.js.Dynamic.{global => g, literal => json}
 import scala.scalajs.js.`|`
 
 package object core {

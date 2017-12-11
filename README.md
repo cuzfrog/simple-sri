@@ -90,6 +90,7 @@ You can find examples in `tests` sub-project.
 ## Document
 
 * [Define component](doc/DefineComponent.MD)
+* Test component (implementing)
 
 ## About
 

@@ -15,10 +15,26 @@ object TestRenderer extends js.Object {
 @js.native
 sealed trait TestRenderer extends js.Object {
   def root: TestInstance = js.native
+  def toJSON(): String = js.native
+  def toTree(): js.Object = js.native
+  def update(element: ReactElement): Unit = js.native
+  def unmount(): Unit = js.native
+  //def getInstance(): ReactElement = js.native
 }
 
 @js.native
 sealed trait TestInstance extends js.Object {
-  def instance: ReactComponent = js.native
-  def props: js.Dynamic = js.native
+
+  def find(testFunc: TestInstance => Boolean): TestInstance = js.native
+  def findByType(tpe: String): TestInstance = js.native
+  def findByProps(props: js.Object): TestInstance = js.native
+  def findAll(testFunc: TestInstance => Boolean): js.Array[TestInstance] = js.native
+  def findAllByType(tpe: String): js.Array[TestInstance] = js.native
+  def findAllByProps(props: js.Object): js.Array[TestInstance] = js.native
+
+  //def instance: ReactComponent = js.native
+  def `type`: String = js.native
+  def props: js.Object = js.native
+  def parent: TestInstance = js.native
+  def children: js.Array[TestInstance] = js.native
 }

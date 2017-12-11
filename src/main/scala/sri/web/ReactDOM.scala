@@ -11,7 +11,11 @@ import scala.scalajs.js.annotation.JSImport
 @JSImport("react-dom", JSImport.Namespace)
 object ReactDOM extends js.Object {
 
-  def render(elm: ReactElement, dom: Element, callback: js.Function = ???): ReactElement = js.native
+  def render(elm: ReactElement, dom: Element,
+             callback: U[js.Function] = js.undefined): ReactElement = js.native
+
+  def hydrate(elm: ReactElement, dom: Element,
+             callback: U[js.Function] = js.undefined): ReactElement = js.native
 
   def unmountComponentAtNode(container: js.Any): Boolean = js.native
 
