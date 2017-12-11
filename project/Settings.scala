@@ -1,5 +1,7 @@
 import sbt.Keys._
 import sbt._
+import com.github.cuzfrog.sbttmpfs.SbtTmpfsPlugin.autoImport._
+import org.scalajs.sbtplugin.ScalaJSPlugin.AutoImport._
 
 object Settings {
   val commonSettings = Seq(
@@ -10,9 +12,12 @@ object Settings {
       "-language:implicitConversions",
       "-P:scalajs:sjsDefinedByDefault"
     ),
-    resolvers += Resolver.jcenterRepo,
-    resolvers += Resolver.bintrayRepo("cuzfrog", "maven"),
+    resolvers ++= Seq(
+      Resolver.bintrayRepo("cuzfrog", "maven"),
+      Resolver.jcenterRepo
+    ),
     organization := "com.github.cuzfrog",
-    licenses += ("Apache-2.0", url("http://www.opensource.org/licenses/apache2.0.php"))
+    licenses += ("Apache-2.0", url("http://www.opensource.org/licenses/apache2.0.php")),
+    tmpfsDirectoryMode := TmpfsDirectoryMode.Mount
   )
 }

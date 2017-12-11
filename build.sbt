@@ -1,8 +1,8 @@
 shellPrompt in ThisBuild := { state => Project.extract(state).currentRef.project + "> " }
 
 version in ThisBuild := "0.1.0-SNAPSHOT"
-scalaVersion in ThisBuild := "2.12.3"
-crossScalaVersions in ThisBuild := Seq("2.11.11", "2.12.3")
+scalaVersion in ThisBuild := "2.12.4"
+crossScalaVersions in ThisBuild := Seq("2.11.11", "2.12.4")
 
 val root = project.in(file("."))
   .enablePlugins(ScalaJSPlugin)
@@ -25,6 +25,7 @@ val `sri-diode-connector` = project.dependsOn(root)
     )
   )
 
+val myTestFramework: TestFramework = new TestFramework("anywhere.MyTestFramework")
 val tests = project.dependsOn(root, `sri-diode-connector`)
   .enablePlugins(ScalaJSPlugin)
   .settings(Settings.commonSettings)
@@ -34,7 +35,21 @@ val tests = project.dependsOn(root, `sri-diode-connector`)
     jsEnv := new org.scalajs.jsenv.jsdomnodejs.JSDOMNodeJSEnv(),
     libraryDependencies ++= Seq(
       "io.suzaku" %%% "diode" % "1.1.2",
-      "com.lihaoyi" %%% "utest" % "0.6.0" % Test
+      "com.lihaoyi" %%% "utest" % "0.6.0" % Test,
+      "com.github.cuzfrog" %%% "sjest" % "0.1.0-SNAPSHOT" % Test
     ),
-    testFrameworks += new TestFramework("utest.runner.Framework")
+    testFrameworks ++= Seq(
+      myTestFramework,
+      new TestFramework("utest.runner.Framework")
+    ),
+    testOptions += Tests.Argument(myTestFramework,
+      s"-opt.js.path:${(artifactPath in Test in fastOptJS).value}")
   )
+
+//mount tmpfs:
+onLoad in Global := {
+  val insertCommand: State => State =
+    (state: State) =>
+      state.copy(remainingCommands = Exec(";root/tmpfsOn;tests/tmpfsOn", None) +: state.remainingCommands)
+  (onLoad in Global).value andThen insertCommand
+}

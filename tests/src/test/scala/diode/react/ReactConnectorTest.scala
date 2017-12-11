@@ -2,8 +2,8 @@ package diode.react
 
 import diode._
 import org.scalajs.dom
-import sri.core.{ComponentP, CreateElement, React, ReactComponent, ReactElement}
-import sri.testutils.{KeyEventData, ReactTestUtils, TestRenderer}
+import sri.core.{ComponentP, CreateElement, ReactComponent}
+import sri.testutils.{KeyEventData, TestRenderer}
 import sri.web.ReactDOM
 import sri.web.vdom.tagsPrefix_<^._
 import utest._
