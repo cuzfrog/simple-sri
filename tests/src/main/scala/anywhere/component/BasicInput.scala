@@ -1,6 +1,6 @@
 package anywhere.component
 
-import sri.core.{Component, CreateElement, ReactElement, ReactRenderNode}
+import sri.core._
 import sri.web.vdom.tagsPrefix_<^._
 
 @deprecated("use redux","0.1.0")

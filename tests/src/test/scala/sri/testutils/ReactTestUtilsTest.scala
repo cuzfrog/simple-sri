@@ -1,14 +1,11 @@
 package sri.testutils
 
 import anywhere.component.BasicInput
-import utest._
 
-object ReactTestUtilsTest extends TestSuite{
+object ReactTestUtilsTest extends sjest.JestSuite {
   private val component = BasicInput()
 
-  val tests = this{
-    'isElement{
-      assert(ReactTestUtils.isElement(component))
-    }
+  test("test component"){
+    expect(ReactTestUtils.isElement(component)).toBeTruthy()
   }
 }

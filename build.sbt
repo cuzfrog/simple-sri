@@ -2,7 +2,7 @@ shellPrompt in ThisBuild := { state => Project.extract(state).currentRef.project
 
 version in ThisBuild := "0.1.0-SNAPSHOT"
 scalaVersion in ThisBuild := "2.12.4"
-crossScalaVersions in ThisBuild := Seq("2.11.11", "2.12.4")
+crossScalaVersions in ThisBuild := Seq("2.12.4")
 
 val root = project.in(file("."))
   .enablePlugins(ScalaJSPlugin)
@@ -25,24 +25,19 @@ val `sri-diode-connector` = project.dependsOn(root)
     )
   )
 
-val myTestFramework: TestFramework = new TestFramework("anywhere.MyTestFramework")
+val jestFramework: TestFramework = new TestFramework("sjest.JestFramework")
 val tests = project.dependsOn(root, `sri-diode-connector`)
   .enablePlugins(ScalaJSPlugin)
   .settings(Settings.commonSettings)
   .settings(
     scalaJSLinkerConfig ~= {_.withModuleKind(ModuleKind.CommonJSModule)},
-    scalaJSUseMainModuleInitializer := true,
-    jsEnv := new org.scalajs.jsenv.jsdomnodejs.JSDOMNodeJSEnv(),
     libraryDependencies ++= Seq(
       "io.suzaku" %%% "diode" % "1.1.2",
-      "com.lihaoyi" %%% "utest" % "0.6.0" % Test,
+      "io.scalajs" %%% "nodejs" % "0.4.2" % Test,
       "com.github.cuzfrog" %%% "sjest" % "0.1.0-SNAPSHOT" % Test
     ),
-    testFrameworks ++= Seq(
-      myTestFramework,
-      new TestFramework("utest.runner.Framework")
-    ),
-    testOptions += Tests.Argument(myTestFramework,
+    testFrameworks += jestFramework,
+    testOptions += Tests.Argument(jestFramework,
       s"-opt.js.path:${(artifactPath in Test in fastOptJS).value}")
   )
 

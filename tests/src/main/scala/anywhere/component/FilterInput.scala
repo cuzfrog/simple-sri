@@ -1,7 +1,7 @@
 package anywhere.component
 
 import anywhere.{AppCircuit, FilterChange}
-import sri.core.{ComponentP, CreateElement, ReactElement, ReactRenderNode}
+import sri.core._
 import sri.web.vdom.tagsPrefix_<^._
 
 class FilterInput extends ComponentP[FilterInput.Props] {

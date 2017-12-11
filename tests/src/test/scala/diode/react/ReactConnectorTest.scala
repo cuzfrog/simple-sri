@@ -1,38 +1,38 @@
 package diode.react
 
 import diode._
+import io.scalajs.nodejs.console
 import org.scalajs.dom
+import sjest.JestSuite
 import sri.core.{ComponentP, CreateElement, ReactComponent}
-import sri.testutils.{KeyEventData, TestRenderer}
+import sri.testutils.{KeyEventData, ReactTestUtils, TestRenderer}
 import sri.web.ReactDOM
 import sri.web.vdom.tagsPrefix_<^._
-import utest._
 
+import scala.language.implicitConversions
 import scala.scalajs.js
 
-object ReactConnectorTest extends TestSuite {
+object ReactConnectorTest extends JestSuite {
 
   private val incrementKey = new KeyEventData("i", 73)
   private val decrementKey = new KeyEventData("d", 68)
   private val resetKey = new KeyEventData("r", 82)
 
-  val tests = Tests {
-    'testConnect - {
 
-
-      val connectedComponent = TestCircuit.connect(_.subModel) { proxy =>
-        val increment = () => proxy.dispatch(Increment(1))
-        val decrement = () => proxy.dispatch(Decrement(1))
-        val reset = () => proxy.dispatch(Reset)
-        CreateElement[TestComponent](TestProps(proxy.value, increment, decrement, reset))
-      }
-      val props = TestRenderer.create(connectedComponent).root.props
-      //ReactTestUtils.Simulate.keyPress(component.firstChild, incrementKey)
-      js.Dynamic.global.console.log(props)
-      val modelValue = TestCircuit.model.subModel.v1
-      assert(modelValue == 0)
+  test("testConnect") {
+    val connectedComponent = TestCircuit.connect(_.subModel) { proxy =>
+      val increment = () => proxy.dispatch(Increment(1))
+      val decrement = () => proxy.dispatch(Decrement(1))
+      val reset = () => proxy.dispatch(Reset)
+      CreateElement[TestComponent](TestProps(proxy.value, increment, decrement, reset))
     }
+    val props = TestRenderer.create(connectedComponent).root.props
+    //ReactTestUtils.Simulate.keyPress(component.firstChild, incrementKey)
+    console.log(props)
+    val modelValue = TestCircuit.model.subModel.v1
+    assert(modelValue == 0)
   }
+
 
   //models:
   private case class RootModel(subModel: SubModel = SubModel())
@@ -62,6 +62,7 @@ object ReactConnectorTest extends TestSuite {
                                increment: () => Unit,
                                decrement: () => Unit,
                                reset: () => Unit)
+
   private class TestComponent extends ComponentP[TestProps] {
     override protected def render() = <.div()(
       <.div()(s"current value: ${props.v.v1}"),
@@ -72,6 +73,5 @@ object ReactConnectorTest extends TestSuite {
   implicit def toDom(reactElement: ReactComponent): dom.Node = {
     ReactDOM.findDOMNode(reactElement)
   }
-
 }
 

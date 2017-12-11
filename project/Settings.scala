@@ -9,7 +9,6 @@ object Settings {
       "-feature",
       "-deprecation",
       "-unchecked",
-      "-language:implicitConversions",
       "-P:scalajs:sjsDefinedByDefault"
     ),
     resolvers ++= Seq(
@@ -18,6 +17,8 @@ object Settings {
     ),
     organization := "com.github.cuzfrog",
     licenses += ("Apache-2.0", url("http://www.opensource.org/licenses/apache2.0.php")),
-    tmpfsDirectoryMode := TmpfsDirectoryMode.Mount
+    tmpfsDirectoryMode := TmpfsDirectoryMode.Mount,
+    logBuffered in Test := false,
+    parallelExecution in Test := false
   )
 }
