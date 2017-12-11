@@ -5,12 +5,11 @@ import io.scalajs.nodejs.console
 import org.scalajs.dom
 import sjest.JestSuite
 import sri.core.{ComponentP, CreateElement, ReactComponent}
-import sri.testutils.{KeyEventData, ReactTestUtils, TestRenderer}
+import sri.testutils.{KeyEventData, ReactTestUtils}
 import sri.web.ReactDOM
 import sri.web.vdom.tagsPrefix_<^._
 
 import scala.language.implicitConversions
-import scala.scalajs.js
 
 object ReactConnectorTest extends JestSuite {
 
@@ -26,12 +25,24 @@ object ReactConnectorTest extends JestSuite {
       val reset = () => proxy.dispatch(Reset)
       CreateElement[TestComponent](TestProps(proxy.value, increment, decrement, reset))
     }
-    val testInstance = TestRenderer.create(connectedElement).root
+    val appDomDiv = dom.document.createElement("div")
+    ReactDOM.render(connectedElement, appDomDiv)
 
-    //ReactTestUtils.Simulate.keyPress(component.firstChild, incrementKey)
-    //console.log(props)
-    val modelValue = TestCircuit.model.subModel.v1
-    assert(modelValue == 1)
+    def currentValue = TestCircuit.model.subModel.v1
+    def simulateKeyPress(keyEventData: KeyEventData): Unit =
+      ReactTestUtils.Simulate.keyPress(appDomDiv.firstChild, keyEventData)
+
+    simulateKeyPress(incrementKey)
+    assert(currentValue == 1)
+
+    simulateKeyPress(incrementKey)
+    assert(currentValue == 2)
+
+    simulateKeyPress(decrementKey)
+    assert(currentValue == 1)
+
+    simulateKeyPress(resetKey)
+    assert(currentValue == 0)
   }
 
 
@@ -73,7 +84,9 @@ object ReactConnectorTest extends JestSuite {
     )
 
     private val eventHandler = (event: ReactKeyboardEventI) => {
-      event.key match{
+      val keyStr = event.key
+      console.log(s"Key '$keyStr' pressed on test component")
+      keyStr match {
         case "i" => props.increment()
         case "d" => props.decrement()
         case "r" => props.reset()
