@@ -5,14 +5,14 @@ import scala.scalajs.js.annotation.JSImport
 
 @js.native
 @JSImport("react", JSImport.Namespace)
-private object ReactJS {
+private object ReactJS extends js.Object {
   def createElement(tpe: js.Any,
                     props: js.Any,
-                    children: js.Any*): Element = js.native
+                    children: js.Any*): ReactElement = js.native
 
-  def cloneElement(element: Element,
+  def cloneElement(element: ReactElement,
                    props: js.Any,
-                   children: js.Any*): Element = js.native
+                   children: js.Any*): ReactElement = js.native
 
   def isValidElement(obj: js.Object): Boolean = js.native
 
@@ -27,8 +27,4 @@ private sealed trait Children extends js.Object {
   def count(children: js.Object): Int = js.native
   def only(children: js.Object): js.Object = js.native
   def toArray(children: js.Object): js.Array[js.Object] = js.native
-}
-
-object React{
-
 }

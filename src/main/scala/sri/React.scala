@@ -1,0 +1,5 @@
+package sri
+
+object React {
+
+}

@@ -4,87 +4,86 @@ import scala.scalajs.js
 import scala.scalajs.js.annotation.{JSImport, JSName}
 
 @js.native
-@JSImport("react", "Component")
-private sealed abstract class ComponentJS[P, S] extends js.Object {
+@JSImport("react", "PureComponent")
+private sealed abstract class PureComponentJS extends js.Object {
   protected def render(): ReactRenders
 
-  private[react] type Props = JsWrapper[P]
-  private[react] type State = JsWrapper[S]
+  type ScalaProps
+  type ScalaState
 
-  protected def componentWillMount(): Unit = js.native
-  protected def componentDidMount(): Unit = js.native
-  protected def componentWillUnmount(): Unit = js.native
-  protected def forceUpdate(): Unit = js.native
-  protected def displayName: String = js.native
+  final type Props = JsWrapper[ScalaProps]
+  final type State = JsWrapper[ScalaState]
 
-  protected def componentDidCatch(error: js.Object, info: js.Object): Unit = js.native
+  def constructor(props: Props): Unit = js.native
 
+  def componentWillMount(): Unit = js.native
+  def componentDidMount(): Unit = js.native
+  def componentWillUnmount(): Unit = js.native
+  def forceUpdate(): Unit = js.native
+  def displayName: String = js.native
+
+  def componentDidCatch(error: js.Object, info: js.Object): Unit = js.native
 
   // ---- native methods that need to be wrapped ----
-  @JSName("componentWillReceiveProps")
-  private[react] def _componentWillReceiveProps(nextProps: Props): Unit = js.native
-  @JSName("shouldComponentUpdate")
-  private[react] def _shouldComponentUpdate(nextProps: Props, nextState: State): Boolean = js.native
-  @JSName("componentWillUpdate")
-  private[react] def _componentWillUpdate(nextProps: Props, nextState: State): Unit = js.native
-  @JSName("componentDidUpdate")
-  private[react] def _componentDidUpdate(prevProps: Props, prevState: State): Unit = js.native
+  def componentWillReceiveProps(nextProps: Props): Unit = js.native
+  def shouldComponentUpdate(nextProps: Props, nextState: State): Boolean = js.native
+  def componentWillUpdate(nextProps: Props, nextState: State): Unit = js.native
+  def componentDidUpdate(prevProps: Props, prevState: State): Unit = js.native
 
-  @JSName("constructor")
-  private[react] def _constructor(props: Props): Unit = js.native
-
-  @JSName("setState")
-  private[react] def _setState(updater: (State, Props) => State): Unit = js.native
-  @JSName("props")
-  private[react] def _props: Props = js.native
-  @JSName("state")
-  private[react] var _state: State = js.native
+  final def setState(updater: (State, Props) => State): Unit = js.native
+  val props: Props = js.native
+  var state: State = js.native
 }
 
+abstract class Component { self =>
+  type P <: AnyRef
+  type S <: AnyRef
 
-abstract class Component[P <: AnyRef, S <: AnyRef] extends ComponentJS[P, S] { self =>
+  protected def render(props: P, getState: () => S, setState: (S => S) => Unit): ReactRenders
+
   protected def getInitialState: js.UndefOr[S] = js.undefined
-  override private[react] def _constructor(props: Props): Unit = {
-    super._constructor(props)
-    getInitialState.foreach { s =>
-      this._state = JsWrapper(s)
-    }
-  }
+
+  protected def componentWillMount(): Unit = ()
+  protected def componentDidMount(): Unit = ()
+  protected def componentWillUnmount(): Unit = ()
+  protected def displayName: String = this.getClass.getSimpleName
 
   protected def componentWillReceiveProps(nextProps: P): Unit = ()
-  override private[react] def _componentWillReceiveProps(nextProps: Props): Unit = {
-    componentWillReceiveProps(nextProps.value)
+  protected def shouldComponentUpdate(prevProps: P, prevState: S,
+                                      nextProps: P, nextState: S): Boolean = {
+    (nextProps ne prevProps) || (nextState ne prevState)
   }
-
-  protected def shouldComponentUpdate(nextProps: P, nextState: S): Boolean = {
-    (props ne nextProps) || (state ne nextState)
-  }
-  override private[react] def _shouldComponentUpdate(nextProps: Props, nextState: State): Boolean = {
-    shouldComponentUpdate(nextProps.value, nextState.value)
-  }
-
   protected def componentWillUpdate(nextProps: P, nextState: S): Unit = ()
-  override private[react] def _componentWillUpdate(nextProps: Props, nextState: State): Unit = {
-    componentWillUpdate(nextProps.value, nextState.value)
-  }
-
   protected def componentDidUpdate(prevProps: P, prevState: S): Unit = ()
-  override private[react] def _componentDidUpdate(prevProps: Props, prevState: State): Unit = {
-    componentDidUpdate(prevProps.value, prevState.value)
-  }
 
-  protected final def props: P = _props.value
-  protected final def state: S = _state.value
+  private[react] final class InnerComponent extends PureComponentJS {
+    override type ScalaProps = P
+    override type ScalaState = S
 
-  protected final def setState(updater: S => S): Unit = {
-    this._setState((prevState, _) =>
-      JsWrapper(updater.apply(prevState.value))
-    )
-  }
+    override def constructor(props: Props): Unit = {
+      super.constructor(props)
+      if (getInitialState != js.undefined) this.state = getInitialState.get
+    }
 
-  protected final def setState(updater: (S, P) => S): Unit = {
-    this._setState((prevState, prevProps) =>
-      JsWrapper(updater.apply(prevState.value, prevProps.value))
-    )
+    override def render(): ReactRenders = self.render(this.props, () => this.state, this.stateUpdater)
+
+    override def componentWillMount(): Unit = self.componentWillMount()
+    override def componentDidMount(): Unit = self.componentDidMount()
+    override def componentWillUnmount(): Unit = self.componentWillUnmount()
+
+    override def componentWillReceiveProps(nextProps: Props): Unit =
+      self.componentWillReceiveProps(nextProps)
+    override def shouldComponentUpdate(nextProps: Props, nextState: State): Boolean =
+      self.shouldComponentUpdate(this.props, this.state, nextProps, nextState)
+    override def componentWillUpdate(nextProps: Props, nextState: State): Unit =
+      self.componentWillUpdate(nextProps, nextState)
+    override def componentDidUpdate(prevProps: Props, prevState: State): Unit =
+      self.componentDidUpdate(prevProps, prevState)
+
+    override val displayName: String = self.displayName
+
+    private val stateUpdater: (S => S) => Unit = (updater: S => S) => {
+      this.setState((prevState, _) => JsWrapper(updater.apply(prevState.value)))
+    }
   }
 }
