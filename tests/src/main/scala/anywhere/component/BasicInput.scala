@@ -3,7 +3,6 @@ package anywhere.component
 import sri.core._
 import sri.web.vdom.tagsPrefix_<^._
 
-@deprecated("use redux","0.1.0")
 class BasicInput extends Component[BasicInput.Props, BasicInput.State] {
   initialState(BasicInput.State(""))
 

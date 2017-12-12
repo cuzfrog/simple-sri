@@ -11,7 +11,7 @@ val root = project.in(file("."))
     name := "simple-sri",
     libraryDependencies ++= Seq(
       "org.scala-lang" % "scala-reflect" % scalaVersion.value % Provided,
-      "org.scala-js" %%% "scalajs-dom" % "0.9.3"
+      "org.scala-js" %%% "scalajs-dom" % "0.9.4" % Provided
     )
   )
 
@@ -33,6 +33,7 @@ val tests = project.dependsOn(root, `sri-diode-connector`)
     scalaJSLinkerConfig ~= {_.withModuleKind(ModuleKind.CommonJSModule)},
     libraryDependencies ++= Seq(
       "io.suzaku" %%% "diode" % "1.1.2",
+      "org.scala-js" %%% "scalajs-dom" % "0.9.4",
       "io.scalajs" %%% "nodejs" % "0.4.2" % Test,
       "com.github.cuzfrog" %%% "sjest" % "0.1.0-SNAPSHOT" % Test
     ),

@@ -10,18 +10,15 @@ import scala.scalajs.js.annotation.JSImport
 @JSImport("react-dom/test-utils", JSImport.Namespace)
 object ReactTestUtils extends js.Object {
   def renderIntoDocument(element: ReactElement): ReactElement = js.native
+  @deprecated("We recommend using shallow rendering or jest.mock() instead", "react")
+  def mockComponent(componentClass: String, mockTagName: String): ReactElement = js.native
   def isElement(element: ReactElement): Boolean = js.native
-  def isElementOfType[T <: ReactComponent](element: ReactElement, componentClass: T): Boolean = js.native
-  def isDOMComponent[T <: ReactComponent](instance: T): Boolean = js.native
+  def isElementOfType(element: ReactElement,
+                      componentClass: String): Boolean = js.native
+  def isDOMComponent(instance: dom.Node): Boolean = js.native
   def isCompositeComponent[T <: ReactComponent](instance: T): Boolean = js.native
 
   val Simulate: Simulate = js.native
 }
 
-@js.native
-trait Simulate extends js.Object{
-  def keyDown(element: dom.Node, eventData: KeyEventData): Unit = js.native
-  def keyPress(element: dom.Node, eventData: KeyEventData): Unit = js.native
-}
 
-final class KeyEventData(val key: String, val keyCode: Int) extends js.Object

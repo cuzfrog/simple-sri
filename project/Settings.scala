@@ -12,8 +12,8 @@ object Settings {
       "-P:scalajs:sjsDefinedByDefault"
     ),
     resolvers ++= Seq(
-      Resolver.bintrayRepo("cuzfrog", "maven"),
-      Resolver.jcenterRepo
+//      Resolver.bintrayRepo("cuzfrog", "maven"),
+//      Opts.resolver.sonatypeSnapshots
     ),
     organization := "com.github.cuzfrog",
     licenses += ("Apache-2.0", url("http://www.opensource.org/licenses/apache2.0.php")),

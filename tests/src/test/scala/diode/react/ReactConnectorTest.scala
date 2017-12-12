@@ -5,11 +5,12 @@ import io.scalajs.nodejs.console
 import org.scalajs.dom
 import sjest.JestSuite
 import sri.core.{ComponentP, CreateElement, ReactComponent}
-import sri.testutils.{KeyEventData, ReactTestUtils}
+import sri.testutils.ReactTestUtils
 import sri.web.ReactDOM
 import sri.web.vdom.tagsPrefix_<^._
 
 import scala.language.implicitConversions
+import scala.scalajs.js
 
 object ReactConnectorTest extends JestSuite {
 
@@ -100,3 +101,4 @@ object ReactConnectorTest extends JestSuite {
   }
 }
 
+private final class KeyEventData(val key: String, val keyCode: Int) extends js.Object
