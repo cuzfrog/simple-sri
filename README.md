@@ -4,6 +4,8 @@
 
 Lightweight scalajs react solution.
 
+Ported react version: 16
+
 ## Features
 
 * Simple style to build react component.

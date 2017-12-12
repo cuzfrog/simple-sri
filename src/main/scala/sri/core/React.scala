@@ -25,15 +25,7 @@ trait React extends js.Object {
 @JSImport("react", JSImport.Namespace)
 object React extends React
 
-@js.native
-trait ReactElement extends js.Object {
 
-  type Instance <: ReactClass
-
-  def key: UndefOr[String] = js.native
-
-  def ref: UndefOr[js.Function] = js.native
-}
 
 trait ReactClass extends js.Object {
   type PropsType

@@ -12,10 +12,10 @@ class Greeting extends React.Component {
   }
 }
 
-const element = React.createElement('Greeting',{name:'myName'});
+const element = React.createElement(Greeting, {name:'myName'});
 const testRenderer = TestRenderer.create(element);
 const testInstance = testRenderer.root
 
 const node = dom.window.document.createElement('div')
 
-console.log(TestUtils.isElementOfType(element, ));
+console.log(TestUtils.isElementOfType(element, Greeting));
