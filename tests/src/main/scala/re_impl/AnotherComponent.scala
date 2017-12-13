@@ -13,5 +13,5 @@ final class AnotherComponent extends ComponentS[AnotherComponent.State] {
 
 object AnotherComponent {
   case class State(value: String = "initial value")
-  def apply(value: String): ReactElement = CreateElement[AnotherComponent]()
+  def apply(value: String): ReactElement = CreateElement[AnotherComponent](null)
 }

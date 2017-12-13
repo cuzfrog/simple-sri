@@ -4,13 +4,14 @@ import diode._
 import io.scalajs.nodejs.console
 import org.scalajs.dom
 import sjest.JestSuite
-import sri.react.{ComponentP, CreateElement}
+import sri.react._
 import sri.react.testutils.ReactTestUtils
 import sri.web.ReactDOM
 import sri.web.vdom.tagsPrefix_<^._
 
 import scala.language.implicitConversions
 import scala.scalajs.js
+import scala.scalajs.js.|
 
 object ReactConnectorTest extends JestSuite {
 
@@ -77,7 +78,7 @@ object ReactConnectorTest extends JestSuite {
                                reset: () => Unit)
 
   private class TestComponent extends ComponentP[TestProps] {
-    override protected def render() = <.div(
+    override def render(): ReactRenders = <.div(
       ^.onKeyPress := eventHandler
     )(
       <.div()(s"current value: ${props.v.v1}"),

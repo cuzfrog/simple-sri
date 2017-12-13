@@ -8,21 +8,32 @@ import scala.scalajs.js
  * Case classes cannot extends js.Object.
  */
 @js.native
-sealed trait JsWrapper[T] extends js.Object {
-  val clazz: js.UndefOr[Class[_]] = js.native
+sealed trait JsWrapper[+T] extends js.Object {
   val value: T = js.native
 }
 
+@js.native
+sealed trait JsPropsWrapper[+T] extends JsWrapper[T] {
+  type Context
+  val clazz: Class[Context] = js.native
+}
+
+@js.native
+private sealed trait JsStateWrapper[+T] extends JsWrapper[T]
+
 private object JsWrapper {
-  final def apply[T, C <: BaseComponent : ClassTag](t: T): JsWrapper[T] = {
-    val tpe = implicitly[ClassTag[C]].runtimeClass match{
-      case rc if rc == classOf[Nothing] => js.undefined
-      case clazz => clazz
-    }
+  final def apply[T](t: T): JsStateWrapper[T] = {
     js.Dynamic.literal(
-      clazz = tpe.asInstanceOf[js.Any],
       value = t.asInstanceOf[js.Any]
-    ).asInstanceOf[JsWrapper[T]]
+    ).asInstanceOf[JsStateWrapper[T]]
   }
-  implicit final def unwrap[T](w: JsWrapper[T]): T = w.value
+
+  final def apply[T](t: T, componentClass: Class[_]): JsPropsWrapper[T] = {
+    js.Dynamic.literal(
+      clazz = componentClass.asInstanceOf[js.Any],
+      value = t.asInstanceOf[js.Any]
+    ).asInstanceOf[JsPropsWrapper[T]]
+  }
+
+  //implicit final def unwrap[T, W <: JsWrapper[T]](w: W): T = w.value
 }

@@ -1,6 +1,6 @@
 package sri.react.testutils
 
-import sri.react.{BaseComponent, ReactElement}
+import sri.react.{BaseComponent, PrototypeComponent, ReactElement}
 
 import scala.scalajs.js
 import scala.scalajs.js.annotation.JSImport
@@ -32,10 +32,10 @@ object ReactTestUtils {
   def isElement(element: ReactElement): Boolean = ReactTestUtilsJS.isElement(element)
 
   def isElementOfType[C <: BaseComponent](element: ReactElement,
-                                      componentClass: Class[C]): Boolean = {
-    val ctor = js.constructorOf[C#InnerComponent[C]]
+                                          componentClass: Class[C]): Boolean = {
+    val ctor = js.constructorOf[PrototypeComponent[C#Props, C#State, C]]
     //Fixed in 1.0.0-M2. No need to provide clazz flag.
-    ReactTestUtilsJS.isElementOfType(element, ctor) && element.props.clazz.contains(componentClass)
+    ReactTestUtilsJS.isElementOfType(element, ctor) && element.props.clazz == componentClass
   }
 
   def isDOMComponent(instance: js.Object): Boolean = ReactTestUtilsJS.isDOMComponent(instance)

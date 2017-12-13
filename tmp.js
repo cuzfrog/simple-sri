@@ -10,6 +10,11 @@ class Greeting extends React.Component {
   render() {
     return this.props.name;
   }
+
+  constructor(props){
+    super(props);
+    console.log('Greeting constructed.');
+  }
 }
 
 class Hello extends React.Component {

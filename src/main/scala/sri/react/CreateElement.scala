@@ -8,43 +8,42 @@ import scala.scalajs.reflect.Reflect
  * React element factory.
  */
 object CreateElement {
-  def apply[C <: BaseComponent : ClassTag](props: C#Props,
-                                           children: ReactNode*): ReactElement = {
+  //  def apply[C <: Component[C#Props, C#State] : ClassTag](props: C#Props,
+  //                                                         children: ReactNode*): ReactElement = {
+  //    ReactJS.createElement(
+  //      js.constructorOf[PrototypeComponent[C#Props, C#State, C]],
+  //      JsWrapper[P, C](props),
+  //      children: _*)
+  //  }
 
-    val clazz = Reflect.lookupInstantiatableClass(implicitly[ClassTag[C]].runtimeClass.getName)
-    val instance = clazz.get.newInstance().asInstanceOf[C]
-    ReactJS.createElement(
-      js.constructorOf[instance.InnerComponent[C]],
-      JsWrapper[C#Props, C](props),
-      children: _*)
-  }
-
-  def apply[C <: BaseComponent : ClassTag](children: ReactNode*): ReactElement = {
-    ReactJS.createElement(
-      js.constructorOf[C#InnerComponent[C]],
-      js.undefined,
-      children: _*)
-  }
+  //  def apply[C <: Component[P, S] : ClassTag](children: ReactNode*): ReactElement = {
+  //    ReactJS.createElement(
+  //      js.constructorOf[PrototypeComponent[P, S, C]],
+  //      js.undefined,
+  //      children: _*)
+  //  }
 
   def apply[C <: BaseComponent : ClassTag](props: C#Props): ReactElement = {
+    val clazz = implicitly[ClassTag[C]].runtimeClass
     ReactJS.createElement(
-      js.constructorOf[C#InnerComponent[C]],
-      JsWrapper[C#Props, C](props))
+      js.constructorOf[PrototypeComponent[C#Props, C#State, C]],
+      JsWrapper(props, clazz)
+    )
   }
 
   // ----- alias -----
-  def withPropsAndChildren
-  [C <: BaseComponent : ClassTag](props: C#Props,
-                                  children: ReactNode*): ReactElement = {
-    this.apply(props, children: _*)
-  }
-
-  def withChildren(children: ReactNode*): ReactElement = {
-    this.apply(children: _*)
-  }
-
-  def withProps[C <: BaseComponent : ClassTag](props: C#Props): ReactElement = {
-    this.apply(props)
-  }
+  //  def withPropsAndChildren
+  //  [C <: Component[P, S] : ClassTag](props: P,
+  //                                    children: ReactNode*): ReactElement = {
+  //    this.apply[P, S, C](props, children: _*)
+  //  }
+  //
+  //  def withChildren[C <: Component[P, S] : ClassTag](children: ReactNode*): ReactElement = {
+  //    this.apply[P, S, C](children: _*)
+  //  }
+  //
+  //    def withProps[C <: Component[_, _] : ClassTag](props: C#Props): ReactElement = {
+  //      this.apply[C](props)
+  //    }
 }
 
