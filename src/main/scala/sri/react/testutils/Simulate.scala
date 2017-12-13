@@ -1,4 +1,4 @@
-package sri.testutils
+package sri.react.testutils
 
 import org.scalajs.dom
 

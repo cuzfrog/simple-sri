@@ -1,6 +1,6 @@
-package sri.testutils
+package sri.react.testutils
 
-import sri.core.{ReactComponent, ReactElement}
+import sri.react.ReactElement
 
 import scala.scalajs.js
 import scala.scalajs.js.annotation.JSImport

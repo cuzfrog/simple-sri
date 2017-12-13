@@ -1,18 +1,16 @@
 package sri.react
 
+import scala.reflect.ClassTag
 import scala.scalajs.js
-import scala.scalajs.js.annotation.{JSImport, JSName}
+import scala.scalajs.js.annotation.JSImport
 
 @js.native
 @JSImport("react", "PureComponent")
-private sealed abstract class PureComponentJS extends js.Object {
+private sealed abstract class PureComponentJS[P, S] extends js.Object {
   protected def render(): ReactRenders
 
-  type ScalaProps
-  type ScalaState
-
-  final type Props = JsWrapper[ScalaProps]
-  final type State = JsWrapper[ScalaState]
+  final type Props = JsWrapper[P]
+  final type State = JsWrapper[S]
 
   def constructor(props: Props): Unit = js.native
 
@@ -56,16 +54,16 @@ abstract class Component { self =>
   protected def componentWillUpdate(nextProps: P, nextState: S): Unit = ()
   protected def componentDidUpdate(prevProps: P, prevState: S): Unit = ()
 
-  private[react] final class InnerComponent extends PureComponentJS {
-    override type ScalaProps = P
-    override type ScalaState = S
+  private[react] final class InnerComponent[C <: Component : ClassTag]
+    extends PureComponentJS[P, S] {
 
     override def constructor(props: Props): Unit = {
       super.constructor(props)
-      if (getInitialState != js.undefined) this.state = getInitialState.get
+      if (getInitialState != js.undefined) this.state = JsWrapper[S, C](getInitialState.get)
     }
 
-    override def render(): ReactRenders = self.render(this.props, () => this.state, this.stateUpdater)
+    override def render(): ReactRenders =
+      self.render(this.props.value, () => this.state.value, this.stateUpdater)
 
     override def componentWillMount(): Unit = self.componentWillMount()
     override def componentDidMount(): Unit = self.componentDidMount()
@@ -83,7 +81,7 @@ abstract class Component { self =>
     override val displayName: String = self.displayName
 
     private val stateUpdater: (S => S) => Unit = (updater: S => S) => {
-      this.setState((prevState, _) => JsWrapper(updater.apply(prevState.value)))
+      this.setState((prevState, _) => JsWrapper[S, C](updater.apply(prevState.value)))
     }
   }
 }

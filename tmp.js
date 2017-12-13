@@ -12,10 +12,16 @@ class Greeting extends React.Component {
   }
 }
 
+class Hello extends React.Component {
+  render() {
+    return this.props.name;
+  }
+}
+
 const element = React.createElement(Greeting, {name:'myName'});
 const testRenderer = TestRenderer.create(element);
 const testInstance = testRenderer.root
 
 const node = dom.window.document.createElement('div')
 
-console.log(TestUtils.isElementOfType(element, Greeting));
+console.log(TestUtils.isElementOfType(element, Hello));

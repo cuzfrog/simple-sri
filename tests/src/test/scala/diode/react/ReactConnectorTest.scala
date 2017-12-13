@@ -5,7 +5,7 @@ import io.scalajs.nodejs.console
 import org.scalajs.dom
 import sjest.JestSuite
 import sri.core.{ComponentP, CreateElement, ReactComponent}
-import sri.testutils.ReactTestUtils
+import sri.react.testutils.ReactTestUtils
 import sri.web.ReactDOM
 import sri.web.vdom.tagsPrefix_<^._
 

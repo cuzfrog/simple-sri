@@ -1,6 +1,6 @@
 package sri
 
-import sri.testutils.ReactTestUtils
+import sri.react.testutils.ReactTestUtils
 
 import scala.scalajs.js
 

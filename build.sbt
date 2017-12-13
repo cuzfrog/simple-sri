@@ -35,7 +35,7 @@ val tests = project.dependsOn(root, `sri-diode-connector`)
       "io.suzaku" %%% "diode" % "1.1.2",
       "org.scala-js" %%% "scalajs-dom" % "0.9.4",
       "io.scalajs" %%% "nodejs" % "0.4.2" % Test,
-      "com.github.cuzfrog" %%% "sjest" % "0.1.0-SNAPSHOT" % Test
+      "com.github.cuzfrog" %%% "sjest" % "0.1.1" % Test
     ),
     testFrameworks += jestFramework,
     testOptions += Tests.Argument(jestFramework,
