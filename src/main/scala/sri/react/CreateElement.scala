@@ -2,6 +2,7 @@ package sri.react
 
 import scala.reflect.ClassTag
 import scala.scalajs.js
+import scala.scalajs.reflect.Reflect
 
 /**
  * React element factory.
@@ -9,8 +10,11 @@ import scala.scalajs.js
 object CreateElement {
   def apply[C <: BaseComponent : ClassTag](props: C#Props,
                                            children: ReactNode*): ReactElement = {
+
+    val clazz = Reflect.lookupInstantiatableClass(implicitly[ClassTag[C]].runtimeClass.getName)
+    val instance = clazz.get.newInstance().asInstanceOf[C]
     ReactJS.createElement(
-      js.constructorOf[C#InnerComponent[C]],
+      js.constructorOf[instance.InnerComponent[C]],
       JsWrapper[C#Props, C](props),
       children: _*)
   }

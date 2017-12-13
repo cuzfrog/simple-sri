@@ -3,6 +3,7 @@ package sri.react
 import scala.reflect.ClassTag
 import scala.scalajs.js
 import scala.scalajs.js.annotation.JSImport
+import scala.scalajs.reflect.annotation.EnableReflectiveInstantiation
 
 @js.native
 @JSImport("react", "PureComponent")
@@ -40,6 +41,7 @@ abstract class Component[P <: AnyRef, S <: AnyRef] extends BaseComponent {
   override type State = S
 }
 
+@EnableReflectiveInstantiation
 sealed abstract class BaseComponent { self =>
   type Props <: AnyRef
   type State <: AnyRef
