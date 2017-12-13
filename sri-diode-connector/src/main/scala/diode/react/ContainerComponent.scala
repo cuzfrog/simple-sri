@@ -1,7 +1,7 @@
 package diode.react
 
 import diode.ModelRO
-import sri.core.{Component, ReactElement, ReactRenderNode}
+import sri.react.{Component, ReactElement, ReactRenders}
 
 private final class ContainerComponent[M, S >: Null <: AnyRef]
   extends Component[ContainerComponent.Props[M, S], S] {
@@ -21,7 +21,7 @@ private final class ContainerComponent[M, S >: Null <: AnyRef]
 
   //override def shouldComponentUpdate already implemented
 
-  override def render(): ReactRenderNode = props.wrapFunc()
+  override def render(): ReactRenders = props.wrapFunc()
 }
 
 private object ContainerComponent {

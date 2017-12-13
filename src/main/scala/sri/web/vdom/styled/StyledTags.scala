@@ -1,6 +1,6 @@
 package sri.web.vdom.styled
 
-import sri.core.{ReactElement, ReactNode}
+import sri.react.{ReactElement, ReactNode}
 
 import scala.language.experimental.macros
 

@@ -1,7 +1,8 @@
 package sri.web.vdom
 
 import org.scalajs.dom
-import sri.core.{CoreGlobals, React, ReactElement, ReactNode, emptyJSArray}
+import sri.react._
+import sri.support.Constants
 
 import scala.scalajs.js.|
 import scala.scalajs.{LinkingInfo, js}
@@ -13,7 +14,7 @@ object CreateDOMElement {
                            props: js.Any,
                            key: String | Int = null,
                            ref: js.Function1[C, Unit] = null,
-                           children: js.Array[ReactNode] = emptyJSArray())
+                           children: js.Array[ReactNode] = js.Array())
     : ReactElement { type Instance = C } = {
 
     if (LinkingInfo.developmentMode) {
@@ -23,7 +24,7 @@ object CreateDOMElement {
         props
           .asInstanceOf[js.Dynamic]
           .updateDynamic("key")(key.asInstanceOf[js.Any])
-      React
+      ReactJS
         .createElement(ctor, props, children: _*)
         .asInstanceOf[ReactElement { type Instance = C }]
     } else { // https://babeljs.io/docs/plugins/transform-react-inline-elements/
@@ -37,7 +38,7 @@ object CreateDOMElement {
           .updateDynamic("children")(js.Array(children: _*))
       js.Dynamic
         .literal(
-          `$$typeof` = CoreGlobals.REACT_ELEMENT_TYPE,
+          `$$typeof` = Constants.REACT_ELEMENT_TYPE,
           `type` = ctor,
           props = props,
           ref = ref,

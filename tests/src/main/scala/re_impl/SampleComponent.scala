@@ -2,12 +2,8 @@ package re_impl
 
 import sri.react._
 
-final class SampleComponent extends Component {
-  override type P = SampleComponent.Props
-
-  override def render(props: P,
-                      getState: () => S,
-                      setState: (S => S) => Unit): ReactRenders = {
+final class SampleComponent extends ComponentP[SampleComponent.Props] {
+  override def render(): ReactRenders = {
     s"Value(${props.value})"
   }
 }

@@ -2,7 +2,7 @@ package sri.web
 
 import org.scalajs.dom
 import org.scalajs.dom.raw.Element
-import sri.core._
+import sri.react._
 
 import scala.scalajs.js
 import scala.scalajs.js.annotation.JSImport

@@ -4,7 +4,7 @@ import diode._
 import io.scalajs.nodejs.console
 import org.scalajs.dom
 import sjest.JestSuite
-import sri.core.{ComponentP, CreateElement, ReactComponent}
+import sri.react.{ComponentP, CreateElement}
 import sri.react.testutils.ReactTestUtils
 import sri.web.ReactDOM
 import sri.web.vdom.tagsPrefix_<^._
@@ -21,8 +21,8 @@ object ReactConnectorTest extends JestSuite {
 
   test("testConnect") {
     val connectedElement = TestCircuit.connect(_.subModel) { proxy =>
-      val increment = () => proxy.dispatch(Increment(1))
-      val decrement = () => proxy.dispatch(Decrement(1))
+      val increment = () => proxy.dispatch(Increment())
+      val decrement = () => proxy.dispatch(Decrement())
       val reset = () => proxy.dispatch(Reset)
       CreateElement[TestComponent](TestProps(proxy.value, increment, decrement, reset))
     }
@@ -52,8 +52,8 @@ object ReactConnectorTest extends JestSuite {
   private case class SubModel(v1: Int = 0, lastAction: String = "")
 
   //actions:
-  private case class Increment(v: Int) extends Action
-  private case class Decrement(v: Int) extends Action
+  private case class Increment(v: Int = 1) extends Action
+  private case class Decrement(v: Int = 1) extends Action
   private case object Reset extends Action
 
   //circuit:
@@ -62,8 +62,8 @@ object ReactConnectorTest extends JestSuite {
 
     private val counterHandler = new ActionHandler(zoomTo(_.subModel)) {
       override protected def handle = {
-        case Increment(v) => updated(value.copy(v1 = value.v1 + 1, lastAction = "increment"))
-        case Decrement(v) => updated(value.copy(v1 = value.v1 - 1, lastAction = "decrement"))
+        case Increment(v) => updated(value.copy(v1 = value.v1 + v, lastAction = "increment"))
+        case Decrement(v) => updated(value.copy(v1 = value.v1 - v, lastAction = "decrement"))
         case Reset => updated(SubModel(lastAction = "reset"))
       }
     }
@@ -94,10 +94,6 @@ object ReactConnectorTest extends JestSuite {
         case _ => //ignore
       }
     }
-  }
-
-  implicit def toDom(reactElement: ReactComponent): dom.Node = {
-    ReactDOM.findDOMNode(reactElement)
   }
 }
 

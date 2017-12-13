@@ -16,7 +16,7 @@ private class MacroImpl(val c: whitebox.Context) {
          import scala.scalajs.js
          val domProps = js.Dynamic.literal()
          ..$allProps
-         val _children = js.Array[sri.core.ReactNode](..$children)
+         val _children = js.Array[sri.react.ReactNode](..$children)
          sri.web.vdom.CreateDOMElement(ctor = $domName, props = domProps, children = _children )
        }
        """

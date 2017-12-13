@@ -1,11 +1,11 @@
 package anywhere.component
 
-import sri.core.{ComponentP, ComponentS, CreateElement, ReactElement, ReactRenderNode}
+import sri.react._
 import sri.web.vdom.tagsPrefix_<^._
 
 class FilterList extends ComponentP[FilterList.Props] {
 
-  override def render(): ReactRenderNode = {
+  override def render(): ReactRenders = {
     <.div()(
       FilterInput(),
       ListView()

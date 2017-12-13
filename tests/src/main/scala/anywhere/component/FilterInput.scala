@@ -1,11 +1,11 @@
 package anywhere.component
 
 import anywhere.{AppCircuit, FilterChange}
-import sri.core._
+import sri.react._
 import sri.web.vdom.tagsPrefix_<^._
 
 class FilterInput extends ComponentP[FilterInput.Props] {
-  override def render(): ReactRenderNode = {
+  override def render(): ReactRenders = {
     println(s"filter input rendered with value: ${props.value}")
     <.input(
       ^.value := props.value,

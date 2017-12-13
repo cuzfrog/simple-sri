@@ -14,7 +14,7 @@ sealed trait JsWrapper[T] extends js.Object {
 }
 
 private object JsWrapper {
-  final def apply[T, C <: Component : ClassTag](t: T): JsWrapper[T] = {
+  final def apply[T, C <: BaseComponent : ClassTag](t: T): JsWrapper[T] = {
     val tpe = implicitly[ClassTag[C]].runtimeClass match{
       case rc if rc == classOf[Nothing] => js.undefined
       case clazz => clazz

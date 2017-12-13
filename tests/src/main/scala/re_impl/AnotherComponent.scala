@@ -1,18 +1,17 @@
 package re_impl
 
-import sri.react.{Component, CreateElement, ReactElement, ReactRenders}
+import sri.react._
 
-final class AnotherComponent extends Component {
-  override type P = AnotherComponent.Props
+import scala.scalajs.js.UndefOr
 
-  override def render(props: P,
-                      getState: () => S,
-                      setState: (S => S) => Unit): ReactRenders = {
-    s"Text(${props.value})"
+final class AnotherComponent extends ComponentS[AnotherComponent.State] {
+  override def getInitialState: UndefOr[AnotherComponent.State] = AnotherComponent.State()
+  override def render(): ReactRenders = {
+    s"Text(${state.value})"
   }
 }
 
 object AnotherComponent {
-  case class Props(value: String)
-  def apply(value: String): ReactElement = CreateElement[AnotherComponent](Props(value))
+  case class State(value: String = "initial value")
+  def apply(value: String): ReactElement = CreateElement[AnotherComponent]()
 }

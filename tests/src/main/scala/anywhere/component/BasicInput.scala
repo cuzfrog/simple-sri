@@ -1,12 +1,12 @@
 package anywhere.component
 
-import sri.core._
+import sri.react._
 import sri.web.vdom.tagsPrefix_<^._
 
 class BasicInput extends Component[BasicInput.Props, BasicInput.State] {
-  initialState(BasicInput.State(""))
+  override def getInitialState = BasicInput.State("")
 
-  override def render(): ReactRenderNode = {
+  override def render(): ReactRenders = {
     <.input(
       ^.value := state.value,
       ^.onChange := callback

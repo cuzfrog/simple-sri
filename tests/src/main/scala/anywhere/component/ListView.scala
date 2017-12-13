@@ -1,11 +1,11 @@
 package anywhere.component
 
 import anywhere.AppCircuit
-import sri.core.{ComponentP, CreateElement, ReactElement, ReactRenderNode}
+import sri.react._
 import sri.web.vdom.tagsPrefix_<^._
 
 class ListView extends ComponentP[ListView.Props] {
-  override def render(): ReactRenderNode = {
+  override def render(): ReactRenders = {
     <.ul()(
       props.elements.zipWithIndex.map { case (v, i) =>
         <.li(^.key := i)(v)
