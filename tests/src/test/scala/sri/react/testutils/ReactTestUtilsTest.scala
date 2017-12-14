@@ -1,14 +1,14 @@
 package sri.react.testutils
 
+import anywhere.component.{BasicInput, FilterInput}
 import io.scalajs.nodejs.console
 import org.scalajs.dom
-import re_impl.{AnotherComponent, SampleComponent}
 import sri.web.ReactDOM
 
 import scala.scalajs.js
 
 object ReactTestUtilsTest extends sjest.JestSuite {
-  private val element = SampleComponent(0)
+  private val element = BasicInput()
   private val impl = ReactTestUtils
 
   test("isElement") {
@@ -16,10 +16,10 @@ object ReactTestUtilsTest extends sjest.JestSuite {
     expect(impl.isElement(element)).toBeTruthy()
   }
   test("isElementOfType+") {
-    expect(impl.isElementOfType(element, classOf[SampleComponent])).toBeTruthy()
+    expect(impl.isElementOfType(element, classOf[BasicInput])).toBeTruthy()
   }
   test("isElementOfType-") {
-    expect(impl.isElementOfType(element, classOf[AnotherComponent])).toBeFalsy()
+    expect(impl.isElementOfType(element, classOf[FilterInput])).toBeFalsy()
   }
 
   private lazy val div = dom.document.createElement("div")

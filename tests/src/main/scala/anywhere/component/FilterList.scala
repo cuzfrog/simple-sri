@@ -15,5 +15,5 @@ class FilterList extends ComponentP[FilterList.Props] {
 
 object FilterList {
   case class Props()
-  def apply(): ReactElement = CreateElement[FilterList](Props())
+  def apply(): ReactElement = CreateElement(new FilterList)(Props())
 }

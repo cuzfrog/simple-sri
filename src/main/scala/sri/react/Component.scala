@@ -33,7 +33,7 @@ sealed abstract class BaseComponent { self =>
 
   private[react] var inner: PrototypeComponent[Props, State, _] = _
 
-  protected def props: Props = inner.props.value
-  protected def state: State = inner.state.value
+  protected def props: Props = inner.props.unwrap
+  protected def state: State = inner.state.unwrap
   protected final def setState(updater: State => State): Unit = inner.modState(updater)
 }

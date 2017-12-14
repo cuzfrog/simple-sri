@@ -23,11 +23,10 @@ object CreateElement {
   //      children: _*)
   //  }
 
-  def apply[C <: BaseComponent : ClassTag](props: C#Props): ReactElement = {
-    val clazz = implicitly[ClassTag[C]].runtimeClass
+  def apply[C <: BaseComponent](instance: C)(props: C#Props): ReactElement = {
     ReactJS.createElement(
       js.constructorOf[PrototypeComponent[C#Props, C#State, C]],
-      JsWrapper(props, clazz)
+      JsPropsWrapper(instance)(props)
     )
   }
 

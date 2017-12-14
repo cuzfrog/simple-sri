@@ -20,13 +20,13 @@ Ported react version: 16
 
 #### Define React component:
 ```scala
-import sri.core._
+import sri.react._
 import sri.web.vdom.tagsPrefix_<^._
 
 class BasicInput extends Component[BasicInput.Props, BasicInput.State] {
-  initialState(BasicInput.State(""))
+  override def getInitialState = BasicInput.State("")
 
-  override def render(): ReactRenderNode = {
+  override def render(): ReactRenders = {
     <.input(
       ^.value := state.value,
       ^.onChange := callback
@@ -41,7 +41,7 @@ class BasicInput extends Component[BasicInput.Props, BasicInput.State] {
 }
 
 object BasicInput {
-  def apply(props: Props = Props()): ReactElement = CreateElement[BasicInput](props)
+  def apply(props: Props = Props()): ReactElement = CreateElement(new BasicInput)(props)
 
   case class State(value: String)
   case class Props()
@@ -81,7 +81,7 @@ object FilterInput {
         event.defaultPrevented
         proxy.dispatch(FilterChange(v))
       }
-      CreateElement[FilterInput](Props(value, onChange))
+      CreateElement(new FilterInput)(Props(value, onChange))
     }
   }
 }

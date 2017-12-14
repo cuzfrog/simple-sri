@@ -20,6 +20,6 @@ object ListView {
 
   def apply(): ReactElement = {
     AppCircuit.connect(_.filterModel.filteredElements)(proxy =>
-      CreateElement[ListView](Props(proxy.apply())))
+      CreateElement(new ListView)(Props(proxy.apply())))
   }
 }

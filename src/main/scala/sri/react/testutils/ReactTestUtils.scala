@@ -34,8 +34,9 @@ object ReactTestUtils {
   def isElementOfType[C <: BaseComponent](element: ReactElement,
                                           componentClass: Class[C]): Boolean = {
     val ctor = js.constructorOf[PrototypeComponent[C#Props, C#State, C]]
-    //Fixed in 1.0.0-M2. No need to provide clazz flag.
-    ReactTestUtilsJS.isElementOfType(element, ctor) && element.props.clazz == componentClass
+    //Fixed in 1.0.0-M2. No need to compare class.
+    ReactTestUtilsJS.isElementOfType(element, ctor) &&
+      element.props.instance.getClass == componentClass
   }
 
   def isDOMComponent(instance: js.Object): Boolean = ReactTestUtilsJS.isDOMComponent(instance)
