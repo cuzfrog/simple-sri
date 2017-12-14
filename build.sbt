@@ -31,6 +31,7 @@ val tests = project.dependsOn(root, `sri-diode-connector`)
   .settings(Settings.commonSettings)
   .settings(
     scalaJSLinkerConfig ~= {_.withModuleKind(ModuleKind.CommonJSModule)},
+    scalaJSUseMainModuleInitializer := true,
     libraryDependencies ++= Seq(
       "io.suzaku" %%% "diode" % "1.1.2",
       "org.scala-js" %%% "scalajs-dom" % "0.9.4",

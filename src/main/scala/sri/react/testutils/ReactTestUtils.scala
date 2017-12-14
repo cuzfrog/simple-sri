@@ -39,7 +39,11 @@ object ReactTestUtils {
       element.props.instance.getClass == componentClass
   }
 
-  def isDOMComponent(instance: js.Object): Boolean = ReactTestUtilsJS.isDOMComponent(instance)
+  def isDOMComponent(instance: js.Object): Boolean =
+    ReactTestUtilsJS.isDOMComponent(instance)
+
+  def isCompositeComponent(instance: js.Object): Boolean =
+    ReactTestUtilsJS.isCompositeComponent(instance)
 
   val Simulate: Simulate = ReactTestUtilsJS.Simulate
 }

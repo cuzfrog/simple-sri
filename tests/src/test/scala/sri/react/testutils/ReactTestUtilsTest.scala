@@ -5,8 +5,6 @@ import io.scalajs.nodejs.console
 import org.scalajs.dom
 import sri.web.ReactDOM
 
-import scala.scalajs.js
-
 object ReactTestUtilsTest extends sjest.JestSuite {
   private val element = BasicInput()
   private val impl = ReactTestUtils
@@ -23,13 +21,21 @@ object ReactTestUtilsTest extends sjest.JestSuite {
   }
 
   private lazy val div = dom.document.createElement("div")
+  private lazy val instance = ReactDOM.render(element, div)
 
   test("isDOMComponent+") {
     expect(impl.isDOMComponent(div)).toBeTruthy()
   }
   test("isDOMComponent-") {
-    val instance = ReactDOM.render(element, div)
-    console.log(instance)
+
     expect(impl.isDOMComponent(instance)).toBeFalsy()
   }
+  test("isCompositeComponent+") {
+    expect(impl.isCompositeComponent(instance)).toBeTruthy()
+  }
+  test("isCompositeComponent-") {
+    expect(impl.isCompositeComponent(div)).toBeFalsy()
+  }
+
+
 }
