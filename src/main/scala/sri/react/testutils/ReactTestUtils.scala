@@ -1,6 +1,6 @@
 package sri.react.testutils
 
-import sri.react.{BaseComponent, PrototypeComponent, ReactElement}
+import sri.react.{BaseComponent, CompositeElement, PrototypeComponent, ReactElement}
 
 import scala.scalajs.js
 import scala.scalajs.js.annotation.JSImport
@@ -36,7 +36,7 @@ object ReactTestUtils {
     val ctor = js.constructorOf[PrototypeComponent[C#Props, C#State, C]]
     //Fixed in 1.0.0-M2. No need to compare class.
     ReactTestUtilsJS.isElementOfType(element, ctor) &&
-      element.props.instance.getClass == componentClass
+      element.asInstanceOf[CompositeElement].props.instance.getClass == componentClass
   }
 
   def isDOMComponent(instance: js.Object): Boolean =

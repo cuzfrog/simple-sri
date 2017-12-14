@@ -4,7 +4,7 @@ import sri.react._
 import sri.web.vdom.tagsPrefix_<^._
 
 class BasicInput extends Component[BasicInput.Props, BasicInput.State] {
-  override def getInitialState = BasicInput.State("")
+  override def getInitialState = BasicInput.State(props.initialValue)
 
   override def render(): ReactRenders = {
     <.input(
@@ -24,6 +24,6 @@ object BasicInput {
   def apply(props: Props = Props()): ReactElement = CreateElement(new BasicInput)(props)
 
   case class State(value: String)
-  case class Props()
+  case class Props(initialValue: String = "", v2: Int = 0)
 }
 

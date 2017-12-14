@@ -26,21 +26,21 @@ private sealed abstract class ComponentJS[P, S] extends js.Object {
   def componentDidUpdate(prevProps: JsProps, prevState: JsState): Unit = js.native
 
   final def setState(updater: (JsState, JsProps) => JsState): Unit = js.native
-  val props: JsProps = js.native
+  //val props: JsProps = js.native
   var state: JsState = js.native
 }
 
 // ----- Real React component -----
 private final class PrototypeComponent
 [P <: AnyRef, S <: AnyRef, C <: BaseComponent {type Props = P; type State = S}]
-(ctorProps: JsPropsWrapper[P]) extends ComponentJS[P, S] {
+(val props: JsPropsWrapper[P]) extends ComponentJS[P, S] {
 
   // ----- construction ----- {
-  private[this] val instance: C = ctorProps.instance.asInstanceOf[C]
+  private[this] val instance: C = props.instance.asInstanceOf[C]
+  instance.inner = this
   if (instance.getInitialState != js.undefined) {
     this.state = JsStateWrapper(instance.getInitialState.get)
   }
-  instance.inner = this
   // ----- }
 
   @inline override def render(): ReactRenders = instance.render()
