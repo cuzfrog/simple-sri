@@ -41,8 +41,6 @@ private final class PrototypeComponent
     this.state = JsStateWrapper(instance.getInitialState.get)
   }
   instance.inner = this
-  println(s"Prototype construct complete")
-  println(instance)
   // ----- }
 
   @inline override def render(): ReactRenders = instance.render()

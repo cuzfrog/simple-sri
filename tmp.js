@@ -5,10 +5,14 @@ const TestUtils = require('react-dom/test-utils');
 const jsdom = require('jsdom');
 const { JSDOM } = jsdom;
 const dom = new JSDOM(`<!DOCTYPE html><p>Hello world</p>`);
+const ShallowRenderer = require('react-test-renderer/shallow');
 
 class Greeting extends React.Component {
   render() {
-    return this.props.name;
+    return [
+      React.createElement(SubComponent,this.props),
+      React.createElement(SubComponent,{name:'myName2'})
+    ];
   }
 
   constructor(props){
@@ -17,7 +21,7 @@ class Greeting extends React.Component {
   }
 }
 
-class Hello extends React.Component {
+class SubComponent extends React.Component {
   render() {
     return this.props.name;
   }
@@ -25,8 +29,13 @@ class Hello extends React.Component {
 
 const element = React.createElement(Greeting, {name:'myName'});
 const testRenderer = TestRenderer.create(element);
-const testInstance = testRenderer.root
+const testInstance = testRenderer.root;
 
-const node = dom.window.document.createElement('div')
+const node = dom.window.document.createElement('div');
 
-console.log(TestUtils.isElementOfType(element, Hello));
+const shallowRenderer = new ShallowRenderer();
+shallowRenderer.render(element);
+const result = shallowRenderer.getRenderOutput();
+
+console.log(result);
+console.log(element);

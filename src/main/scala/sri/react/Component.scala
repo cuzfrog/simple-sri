@@ -25,15 +25,15 @@ sealed abstract class BaseComponent { self =>
   def displayName: String = this.getClass.getSimpleName
 
   def componentWillReceiveProps(nextProps: Props): Unit = ()
-  def shouldComponentUpdate(nextProps: Props, nextState: State): Boolean = {
-    (nextProps ne props) || (nextState ne state)
-  }
   def componentWillUpdate(nextProps: Props, nextState: State): Unit = ()
   def componentDidUpdate(prevProps: Props, prevState: State): Unit = ()
 
   private[react] var inner: PrototypeComponent[Props, State, _] = _
 
-  protected def props: Props = inner.props.unwrap
-  protected def state: State = inner.state.unwrap
+  @inline
+  protected final def props: Props = inner.props.unwrap
+  @inline
+  protected final def state: State = inner.state.unwrap
+  @inline
   protected final def setState(updater: State => State): Unit = inner.modState(updater)
 }
