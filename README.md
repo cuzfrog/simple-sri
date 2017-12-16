@@ -34,7 +34,7 @@ class BasicInput extends Component[BasicInput.Props, BasicInput.State] {
   }
 
   private val callback = (event: ReactEventI) => {
-    val value = event.target.value //event value must be fetched synchronously.
+    val value = event.target.value
     setState(s => s.copy(value = value))
     println(value)
   }
@@ -91,7 +91,7 @@ You can find examples in `tests` sub-project.
 
 ## Document
 
-* [Define component](doc/DefineComponent.MD)
+* Define component
 * Test component (implementing)
 
 ## About

@@ -14,8 +14,8 @@ sealed trait JsWrapper[T] extends js.Object {
 
 @js.native
 sealed trait JsPropsWrapper[T] extends JsWrapper[T] {
-  type ComponenetClass <: BaseComponent {type Props = T}
-  val instance: ComponenetClass = js.native
+  type ComponentClass <: BaseComponent {type Props = T}
+  val instance: ComponentClass = js.native
   val key: js.UndefOr[String | Int] = js.native
   val ref: js.UndefOr[js.Function1[_, Unit]] = js.native
 }

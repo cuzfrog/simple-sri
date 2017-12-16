@@ -13,12 +13,6 @@ sealed trait ReactElementType extends js.Object{
 }
 
 @js.native
-sealed trait ReactElement extends ReactElementType {
-  def `type`: String | Constructor = js.native
-  def props: Props | JsPropsWrapper[Props] = js.native
-}
-
-@js.native
 sealed trait CompositeElement extends ReactElementType {
   def `type`: Constructor = js.native
   def props: JsPropsWrapper[Props] = js.native

@@ -23,8 +23,12 @@ class Greeting extends React.Component {
 
 class SubComponent extends React.Component {
   render() {
-    return this.props.name;
+    return createDiv(this.props.name);
   }
+}
+
+const createDiv = function(children){
+  return React.createElement('div',{id:'test-div'},children);
 }
 
 const element = React.createElement(Greeting, {name:'myName'});
@@ -37,5 +41,4 @@ const shallowRenderer = new ShallowRenderer();
 shallowRenderer.render(element);
 const result = shallowRenderer.getRenderOutput();
 
-console.log(result);
 console.log(element);
