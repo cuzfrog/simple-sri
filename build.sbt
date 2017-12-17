@@ -31,6 +31,7 @@ val `test-utils` = project.dependsOn(root)
   .settings(
     name := "simple-sri-test-utils",
     libraryDependencies ++= Seq(
+      "org.scala-js" %%% "scalajs-dom" % "0.9.4" % Provided
     )
   )
 

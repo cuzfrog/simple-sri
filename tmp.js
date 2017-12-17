@@ -6,12 +6,15 @@ const jsdom = require('jsdom');
 const { JSDOM } = jsdom;
 const dom = new JSDOM(`<!DOCTYPE html><p>Hello world</p>`);
 const ShallowRenderer = require('react-test-renderer/shallow');
+const Enzyme = require('enzyme');
+const Adapter = require('enzyme-adapter-react-16');
+Enzyme.configure({ adapter: new Adapter() });
 
 class Greeting extends React.Component {
   render() {
     return [
-      React.createElement(SubComponent,this.props),
-      React.createElement(SubComponent,{name:'myName2'})
+      React.createElement(SubComponent,{name:this.props.name, key:1}),
+      React.createElement(SubComponent,{name:'myName2', key:2})
     ];
   }
 
@@ -32,13 +35,14 @@ const createDiv = function(children){
 }
 
 const element = React.createElement(Greeting, {name:'myName'});
-const testRenderer = TestRenderer.create(element);
-const testInstance = testRenderer.root;
+//const testRenderer = TestRenderer.create(element);
+//const testInstance = testRenderer.root;
+//
+//const node = dom.window.document.createElement('div');
+//
+//const shallowRenderer = new ShallowRenderer();
+//shallowRenderer.render(element);
+//const result = shallowRenderer.getRenderOutput();
 
-const node = dom.window.document.createElement('div');
-
-const shallowRenderer = new ShallowRenderer();
-shallowRenderer.render(element);
-const result = shallowRenderer.getRenderOutput();
-
-console.log(element);
+const shallow = Enzyme.shallow(element)
+console.log(shallow.find('#test-div').type)

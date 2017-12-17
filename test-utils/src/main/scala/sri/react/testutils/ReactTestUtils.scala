@@ -1,9 +1,11 @@
 package sri.react.testutils
 
-import sri.react.{BaseComponent, CompositeElement, PrototypeComponent, ReactElement}
+import org.scalajs.dom
+import sri.react._
 
 import scala.scalajs.js
 import scala.scalajs.js.annotation.JSImport
+import scala.scalajs.js.|
 
 @js.native
 @JSImport("react-dom/test-utils", JSImport.Namespace)
@@ -18,9 +20,9 @@ private object ReactTestUtilsJS extends js.Object {
   def isElementOfType(element: ReactElement,
                       componentClass: js.Any): Boolean = js.native
 
-  def isDOMComponent(instance: js.Object): Boolean = js.native
+  def isDOMComponent(instance: js.Any): Boolean = js.native
 
-  def isCompositeComponent(instance: js.Object): Boolean = js.native
+  def isCompositeComponent(instance: js.Any): Boolean = js.native
 
   val Simulate: Simulate = js.native
 }
@@ -39,11 +41,11 @@ object ReactTestUtils {
       element.asInstanceOf[CompositeElement].props.instance.getClass == componentClass
   }
 
-  def isDOMComponent(instance: js.Object): Boolean =
-    ReactTestUtilsJS.isDOMComponent(instance)
+  def isDOMComponent(instance: ReactNode | dom.Node): Boolean =
+    ReactTestUtilsJS.isDOMComponent(instance.asInstanceOf[js.Any])
 
-  def isCompositeComponent(instance: js.Object): Boolean =
-    ReactTestUtilsJS.isCompositeComponent(instance)
+  def isCompositeComponent(instance: ReactNode | dom.Node): Boolean =
+    ReactTestUtilsJS.isCompositeComponent(instance.asInstanceOf[js.Any])
 
   val Simulate: Simulate = ReactTestUtilsJS.Simulate
 }

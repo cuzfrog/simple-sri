@@ -9,8 +9,6 @@ package object react {
   type ReactText = String | Double
   type ReactEmpty = Boolean | Null
 
-  type ReactElement = CompositeElement | DomElement
-
   type ReactElementNode = ReactElement | js.Array[ReactElement]
   type ReactNode = ReactElementNode | ReactText | js.Array[String] | js.Array[Double]
 

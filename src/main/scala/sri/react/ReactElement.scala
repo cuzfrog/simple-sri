@@ -4,7 +4,7 @@ import scala.scalajs.js
 import scala.scalajs.js.|
 
 @js.native
-sealed trait ReactElementType extends js.Object{
+sealed trait ReactElement extends js.Object{
   protected type Props
   protected type Constructor = js.Function1[JsPropsWrapper[Props], ReactElement]
   //def `$$typeof` = js.native
@@ -13,13 +13,13 @@ sealed trait ReactElementType extends js.Object{
 }
 
 @js.native
-sealed trait CompositeElement extends ReactElementType {
+sealed trait CompositeElement extends ReactElement {
   def `type`: Constructor = js.native
   def props: JsPropsWrapper[Props] = js.native
 }
 
 @js.native
-sealed trait DomElement extends ReactElementType{
+sealed trait DomElement extends ReactElement{
   def `type`: String = js.native
   def props: Props = js.native
 }
