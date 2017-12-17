@@ -21,7 +21,7 @@ class BasicInput extends Component[BasicInput.Props, BasicInput.State] {
 }
 
 object BasicInput {
-  def apply(props: Props = Props()): ReactElement = CreateElement(new BasicInput)(props)
+  def apply(props: Props = Props()): CompositeElement = CreateElement(new BasicInput)(props)
 
   case class State(value: String)
   case class Props(initialValue: String = "", v2: Int = 0)

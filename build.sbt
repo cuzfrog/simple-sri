@@ -25,12 +25,21 @@ val `sri-diode-connector` = project.dependsOn(root)
     )
   )
 
-val jestFramework: TestFramework = new TestFramework("sjest.JestFramework")
-val tests = project.dependsOn(root, `sri-diode-connector`)
+val `test-utils` = project.dependsOn(root)
   .enablePlugins(ScalaJSPlugin)
   .settings(Settings.commonSettings)
   .settings(
-    scalaJSLinkerConfig ~= {_.withModuleKind(ModuleKind.CommonJSModule)},
+    name := "simple-sri-test-utils",
+    libraryDependencies ++= Seq(
+    )
+  )
+
+val jestFramework: TestFramework = new TestFramework("sjest.JestFramework")
+val tests = project.dependsOn(root, `sri-diode-connector`, `test-utils` % Test)
+  .enablePlugins(ScalaJSPlugin)
+  .settings(Settings.commonSettings)
+  .settings(
+    scalaJSLinkerConfig ~= { _.withModuleKind(ModuleKind.CommonJSModule) },
     scalaJSUseMainModuleInitializer := true,
     libraryDependencies ++= Seq(
       "io.suzaku" %%% "diode" % "1.1.2",

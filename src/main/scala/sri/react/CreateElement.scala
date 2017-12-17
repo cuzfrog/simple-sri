@@ -13,7 +13,7 @@ object CreateElement {
   def apply[C <: BaseComponent](instance: C)
                                (props: C#Props,
                                 key: js.UndefOr[String | Int] = js.undefined,
-                                ref: js.UndefOr[js.Function1[_, Unit]] = js.undefined): ReactElement = {
+                                ref: js.UndefOr[js.Function1[_, Unit]] = js.undefined): CompositeElement = {
     this.withChildren(instance)(props, key, ref)()
   }
 
@@ -22,12 +22,12 @@ object CreateElement {
                                       (props: C#Props,
                                        key: js.UndefOr[String | Int] = js.undefined,
                                        ref: js.UndefOr[js.Function1[_, Unit]] = js.undefined)
-                                      (children: ReactNode*): ReactElement = {
+                                      (children: ReactNode*): CompositeElement = {
     ReactJS.createElement(
       js.constructorOf[PrototypeComponent[C#Props, C#State, C]],
       JsPropsWrapper(instance)(props, key, ref),
       children: _*
-    )
+    ).asInstanceOf[CompositeElement]
   }
 }
 
