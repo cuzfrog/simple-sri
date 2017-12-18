@@ -48,6 +48,7 @@ object JsPropsWrapper {
 
 private object JsWrapper{
   implicit final class WrapperOps[T](w: JsWrapper[T]) {
+    @noinline
     def unwrap: T = {
       if (w != null) w.value
       else js.undefined.asInstanceOf[T]

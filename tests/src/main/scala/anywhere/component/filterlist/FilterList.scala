@@ -1,4 +1,4 @@
-package anywhere.component
+package anywhere.component.filterlist
 
 import sri.react._
 import sri.web.vdom.tagsPrefix_<^._

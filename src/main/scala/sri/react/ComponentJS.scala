@@ -25,7 +25,7 @@ private sealed abstract class ComponentJS[P, S] extends js.Object {
   def componentWillUpdate(nextProps: JsProps, nextState: JsState): Unit = js.native
   def componentDidUpdate(prevProps: JsProps, prevState: JsState): Unit = js.native
 
-  final def setState(updater: (JsState, JsProps) => JsState): Unit = js.native
+  final def setState(updater: js.Function1[JsState, JsState]): Unit = js.native
   //val props: JsProps = js.native
   var state: JsState = js.native
 }
@@ -59,6 +59,6 @@ private final class PrototypeComponent
   @inline override def displayName: String = instance.displayName
 
   def modState(updater: S => S): Unit = {
-    this.setState((prevState, _) => JsStateWrapper(updater.apply(prevState.unwrap)))
+    this.setState(prevState => JsStateWrapper(updater.apply(prevState.unwrap)))
   }
 }

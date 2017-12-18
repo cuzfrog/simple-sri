@@ -1,6 +1,7 @@
 package sri.react.testutils
 
-import anywhere.component.{BasicInput, FilterInput}
+import anywhere.component.BasicInput
+import anywhere.component.filterlist.FilterInput
 import io.scalajs.nodejs.console
 import org.scalajs.dom
 import sri.web.ReactDOM

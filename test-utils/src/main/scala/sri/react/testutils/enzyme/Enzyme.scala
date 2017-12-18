@@ -143,10 +143,10 @@ trait EnzymeWrapper[P, S] extends js.Object {
   def get(index: Int): ReactElement = js.native
 
   /** Returns the wrapper's underlying node. */
-  def getNode(): ReactElement = js.native
+  def getElement(): ReactElement = js.native
 
   /** Returns the wrapper's underlying nodes. */
-  def getNodes(): js.Array[ReactElement] = js.native
+  def getElements(): js.Array[ReactElement] = js.native
 
   /** Returns a wrapper of the node at the provided index of the current wrapper. */
   def at(index: Int): W = js.native
@@ -157,9 +157,8 @@ trait EnzymeWrapper[P, S] extends js.Object {
   /** Returns a wrapper of the last node of the current wrapper. */
   def last(): W = js.native
 
-  /** Returns the state hash for the root node of the wrapper.
-   * Optionally pass in a prop name and it will return just that value. */
-  def state(key: js.UndefOr[String] = js.undefined): JsStateWrapper[S] = js.native
+  /** Returns the state hash for the root node of the wrapper */
+  def state(): JsStateWrapper[S] = js.native
 
   /** Returns the context hash for the root node of the wrapper.
    * Optionally pass in a prop name and it will return just that value. */
@@ -213,7 +212,7 @@ trait EnzymeWrapper[P, S] extends js.Object {
   def setContext(context: js.Object): W = js.native
 
   /** Gets the instance of the component being rendered as the root node passed into shallow(). */
-  def instance(): js.Object = js.native
+  def instance(): js.Dynamic = js.native
 
   /** Forces a re-render. Useful to run before checking the render output
    * if something external may be updating the state of the component somewhere. */

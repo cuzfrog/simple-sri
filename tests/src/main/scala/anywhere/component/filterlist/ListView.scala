@@ -1,4 +1,4 @@
-package anywhere.component
+package anywhere.component.filterlist
 
 import anywhere.AppCircuit
 import sri.react._

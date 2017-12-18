@@ -8,7 +8,7 @@ sealed trait ShallowWrapper[P, S] extends EnzymeWrapper[P, S] {
   override type W = ShallowWrapper[P, S]
 
   /** Simulates an event on the current node. */
-  def simulate(event: String, args: js.Any*): ShallowWrapper[P, S] = js.native
+  def simulate(event: String, args: js.UndefOr[js.Object] = js.undefined): Unit = js.native
 
   /** Shallow render the one non-DOM child of the current wrapper, and return a wrapper around the result.
    * <br>*
