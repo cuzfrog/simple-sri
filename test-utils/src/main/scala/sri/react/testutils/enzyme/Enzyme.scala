@@ -57,6 +57,8 @@ trait EnzymeWrapper[P, S] extends js.Object {
 
   type W <: EnzymeWrapper[P, S]
 
+  def length: Int = js.native
+
   /** Find every node in the render tree that matches the provided selector. */
   def find(selector: EnzymeSelector): W = js.native
 

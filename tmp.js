@@ -45,4 +45,4 @@ const element = React.createElement(Greeting, {name:'myName'});
 //const result = shallowRenderer.getRenderOutput();
 
 const shallow = Enzyme.shallow(element)
-console.log(shallow.find('#test-div').type)
+console.log(shallow.find('#test-div').name())

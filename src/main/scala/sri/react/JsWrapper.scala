@@ -21,16 +21,16 @@ sealed trait JsPropsWrapper[T] extends JsWrapper[T] {
 }
 
 @js.native
-private sealed trait JsStateWrapper[T] extends JsWrapper[T]
+sealed trait JsStateWrapper[T] extends JsWrapper[T]
 
-private object JsStateWrapper {
+object JsStateWrapper {
   final def apply[T](t: T): JsStateWrapper[T] = {
     js.Dynamic.literal(
       value = t.asInstanceOf[js.Any]
     ).asInstanceOf[JsStateWrapper[T]]
   }
 }
-private object JsPropsWrapper {
+object JsPropsWrapper {
   final def apply[C <: BaseComponent]
   (inst: C)(t: C#Props,
             key: js.UndefOr[String | Int] = js.undefined,
