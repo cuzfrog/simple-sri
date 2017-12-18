@@ -93,6 +93,7 @@ You can find examples in `tests` sub-project.
 
 * Define component
 * Test component (implementing)
+* Case class / js Object conversion
 
 ## About
 
