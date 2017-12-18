@@ -2,7 +2,7 @@ package sri.web.vdom
 
 import org.scalajs.dom
 import sri.react._
-import sri.support.Constants
+import sri.global.Constants
 
 import scala.scalajs.js.|
 import scala.scalajs.{LinkingInfo, js}

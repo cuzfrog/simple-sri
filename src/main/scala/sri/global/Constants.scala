@@ -1,4 +1,4 @@
-package sri.support
+package sri.global
 
 import scala.scalajs.js
 

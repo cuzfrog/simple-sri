@@ -1,8 +1,10 @@
-package sri
+package sri.global
 
 import io.scalajs.JSON
 import io.scalajs.nodejs.console
-import react._
+import sri.BaseSuite
+
+import sri.react._
 
 import scala.scalajs.js
 import scala.util.Random

@@ -1,6 +1,6 @@
 package sri
 
-import sri.support.JsObjectConvertible
+import sri.global.JsObjectConvertible
 
 import scala.scalajs.js
 import scala.scalajs.js.|

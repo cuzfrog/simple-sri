@@ -1,4 +1,4 @@
-package sri.support
+package sri.global
 
 import scala.scalajs.js
 import scala.language.experimental.macros
@@ -41,7 +41,7 @@ private object JsObjectConvertible {
 
       q"""
       import scala.scalajs.js
-      new sri.support.JsObjectConvertible[$tpe] {
+      new sri.global.JsObjectConvertible[$tpe] {
 
         def toJs(t: $tpe): js.Object = js.Dynamic.literal(..$toParams)
 
