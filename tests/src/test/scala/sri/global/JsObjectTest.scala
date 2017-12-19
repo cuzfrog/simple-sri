@@ -12,7 +12,6 @@ object JsObjectTest extends sjest.JestSuite {
     val obj = genObj
     val v = Random.nextInt()
     obj.asInstanceOf[js.Dynamic].updateDynamic("field")(v)
-
     expect(obj.call(_.field)).toBe(v)
   }
 

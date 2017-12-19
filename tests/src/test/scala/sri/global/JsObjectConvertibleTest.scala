@@ -11,7 +11,6 @@ import scala.util.Random
 
 object JsObjectConvertibleTest extends BaseSuite {
 
-
   private def genTestClass() =
     TestClass(
       Random.genAlphanumeric(10),
@@ -25,7 +24,7 @@ object JsObjectConvertibleTest extends BaseSuite {
     val json = JSON.stringify(testClass.toJsObject)
     val expectedJson = s"""{"f1":"${testClass.f1}","v1":${testClass.v1},"nested":{"value$$2":{}}}"""
     expect(json).toBe(expectedJson)
-    console.log(JSON.stringify(testClass.toJsObject))
+    //console.log(JSON.stringify(testClass.toJsObject))
   }
 
   test("from js object") {
@@ -35,24 +34,31 @@ object JsObjectConvertibleTest extends BaseSuite {
       v1 = testClass.v1,
       callback = testClass.callback,
       nested = testClass.nested.asInstanceOf[js.Any]
-    )
-    val parsed = obj.toScalaClass[TestClass]
+    ).asInstanceOf[JsObject[TestClass]]
+    val parsed = obj.toScalaClass
     expect(parsed).toEqual(testClass)
   }
 
   test("from js object negatively") {
-    val testClass = this.genTestClass()
-    val obj = js.Dynamic.literal(
-      v1 = testClass.v1
-    )
-    expectFunc(() => obj.toScalaClass[TestClass])
+    val obj = new JsObject[TestClass]
+    expectFunc(() => obj.toScalaClass)
       .toThrow("Cannot convert js object to scala class, 'f1' is undefined")
   }
 
   test("transitivity") {
     val testClass = this.genTestClass()
-    console.log(testClass.toJsObject)
-    expect(testClass.toJsObject.toScalaClass[TestClass]).toEqual(testClass)
+    //console.log(testClass.toJsObject)
+    expect(testClass.toJsObject.toScalaClass).toEqual(testClass)
+  }
+
+  test("call on js object") {
+    val testClass = this.genTestClass()
+    val jsObject = testClass.toJsObject
+
+    expect(jsObject.call(_.f1)).toBe(testClass.f1)
+    expect(jsObject.call(_.v1)).toBe(testClass.v1)
+    expect(jsObject.call(_.callback)).toBe(testClass.callback)
+    expect(jsObject.call(_.nested.get)).toBe(testClass.nested.get)
   }
 
   private case class TestClass(f1: String,

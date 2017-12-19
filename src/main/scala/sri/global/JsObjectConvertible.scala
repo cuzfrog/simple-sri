@@ -1,12 +1,11 @@
 package sri.global
 
-import scala.scalajs.js
 import scala.language.experimental.macros
 import scala.reflect.macros.blackbox
 
 trait JsObjectConvertible[T <: Product with Serializable] {
-  def toJs(t: T): js.Object
-  def fromJs(obj: js.Object): T
+  def toJs(t: T): JsObject[T]
+  def fromJs(obj: JsObject[T]): T
 }
 
 private object JsObjectConvertible {
@@ -24,7 +23,7 @@ private object JsObjectConvertible {
         case m: MethodSymbol if m.isPrimaryConstructor => m
       }.get.paramLists.head
 
-      val (checkParams, toParams, fromParams) = fields.map { field =>
+      val (checkStats, toStats, fromParams) = fields.map { field =>
         val name = field.asTerm.name
         val key = name.decodedName.toTermName
         val returnType = tpe.decl(name).typeSignature
@@ -33,7 +32,9 @@ private object JsObjectConvertible {
           q"""if(!obj.hasOwnProperty(${name.toString}))
              throw new scala.scalajs.runtime.UndefinedBehaviorError(
              "Cannot convert js object to scala class, '"+ ${name.toString} + "' is undefined")"""
-        val toParam = q"$key = t.$name.asInstanceOf[js.Any]"
+
+        val toParam = q"jsDynamic.updateDynamic(${key.toString})(t.$name.asInstanceOf[js.Any])"
+
         val fromParam = q"obj.asInstanceOf[js.Dynamic].$key.asInstanceOf[$returnType]"
 
         (checkParam, toParam, fromParam)
@@ -43,10 +44,14 @@ private object JsObjectConvertible {
       import scala.scalajs.js
       new sri.global.JsObjectConvertible[$tpe] {
 
-        def toJs(t: $tpe): js.Object = js.Dynamic.literal(..$toParams)
-
-        def fromJs(obj: js.Object): $tpe = {
-          ..$checkParams
+        def toJs(t: $tpe): JsObject[$tpe] = {
+          val jsObject = new JsObject[$tpe]
+          val jsDynamic = jsObject.asInstanceOf[js.Dynamic]
+          ..$toStats
+          jsObject
+        }
+        def fromJs(obj: JsObject[$tpe]): $tpe = {
+          ..$checkStats
           $companion(..$fromParams)
         }
       }
