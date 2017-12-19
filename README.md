@@ -1,5 +1,5 @@
 # Simple Scalajs-React-Interface
-
+[![Build Status](https://travis-ci.org/cuzfrog/simple-sri.svg?branch=master)](https://travis-ci.org/cuzfrog/simple-sri)
 [![Scala.js](https://www.scala-js.org/assets/badges/scalajs-0.6.17.svg)](https://www.scala-js.org)
 
 Lightweight scalajs react solution.
@@ -8,13 +8,23 @@ Ported react version: 16
 
 ## Features
 
-* Simple style to build react component. 
+* Simple and straightforward style to build react component. 
 * Use [diode](https://diode.suzaku.io/) instead of redux to manage state.
 * Write your DOM tests side by side with [scala-jest](https://github.com/cuzfrog/scala-jest).
 
 ## Setup
 
+Dependencies:
 
+    "com.github.cuzfrog" %%% "simple-sri" % "0.2.0-SNAPSHOT"
+    
+Diode connector:
+
+    "com.github.cuzfrog" %%% "simple-sri-diode" % "0.2.0-SNAPSHOT"
+
+Test utilities:
+
+    "com.github.cuzfrog" %%% "simple-sri-test-utils" % "0.2.0-SNAPSHOT" % Test
 
 ## Example
 
@@ -91,14 +101,14 @@ You can find examples in `tests` sub-project.
 
 ## Document
 
-* Component detail
-* Test (implementing)
+#### Component detail
+
+#### Test
 
 ## About
 
 This project derives from [scalajs-react-interface](https://github.com/scalajs-react-interface) by @chandu0101.
 
- 
 Author: Cause Chung (cuzfrog@139.com)
  
 License: Apache License Version 2.0

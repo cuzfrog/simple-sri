@@ -1,3 +1,5 @@
+import Settings._
+
 shellPrompt in ThisBuild := { state => Project.extract(state).currentRef.project + "> " }
 
 version in ThisBuild := "0.2.0-SNAPSHOT"
@@ -6,7 +8,7 @@ crossScalaVersions in ThisBuild := Seq("2.12.4")
 
 val root = project.in(file("."))
   .enablePlugins(ScalaJSPlugin)
-  .settings(Settings.commonSettings)
+  .settings(commonSettings, publicationSettings, readmeVersionSettings)
   .settings(
     name := "simple-sri",
     libraryDependencies ++= Seq(
@@ -17,7 +19,7 @@ val root = project.in(file("."))
 
 val `sri-diode-connector` = project.dependsOn(root)
   .enablePlugins(ScalaJSPlugin)
-  .settings(Settings.commonSettings)
+  .settings(commonSettings, publicationSettings, readmeVersionSettings)
   .settings(
     name := "simple-sri-diode",
     libraryDependencies ++= Seq(
@@ -27,7 +29,7 @@ val `sri-diode-connector` = project.dependsOn(root)
 
 val `test-utils` = project.dependsOn(root)
   .enablePlugins(ScalaJSPlugin)
-  .settings(Settings.commonSettings)
+  .settings(commonSettings, publicationSettings, readmeVersionSettings)
   .settings(
     name := "simple-sri-test-utils",
     libraryDependencies ++= Seq(
@@ -38,7 +40,7 @@ val `test-utils` = project.dependsOn(root)
 val jestFramework: TestFramework = new TestFramework("sjest.JestFramework")
 val tests = project.dependsOn(root, `sri-diode-connector`, `test-utils` % Test)
   .enablePlugins(ScalaJSPlugin)
-  .settings(Settings.commonSettings)
+  .settings(commonSettings)
   .settings(
     scalaJSLinkerConfig ~= { _.withModuleKind(ModuleKind.CommonJSModule) },
     scalaJSUseMainModuleInitializer := true,
@@ -60,3 +62,18 @@ onLoad in Global := {
       state.copy(remainingCommands = Exec(";root/tmpfsOn;tests/tmpfsOn", None) +: state.remainingCommands)
   (onLoad in Global).value andThen insertCommand
 }
+
+//release:
+import ReleaseTransformations._
+
+inThisBuild(List(
+  pgpReadOnly := false,
+  pgpSecretRing := baseDirectory.value / "project" / "codesigning.asc",
+  pgpPassphrase := sys.env.get("PGP_PASS").map(_.toArray),
+  releaseProcess := Seq[ReleaseStep](
+    checkSnapshotDependencies,
+    releaseStepCommand("pgp-cmd recv-key 895B79DB hkp://keyserver.ubuntu.com"),
+    releaseStepCommand("publishSigned"),
+    releaseStepCommand("sonatypeRelease")
+  )
+))
