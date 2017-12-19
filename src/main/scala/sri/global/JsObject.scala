@@ -5,33 +5,32 @@ import scala.language.experimental.macros
 import scala.reflect.macros.whitebox
 import scala.scalajs.js
 
-class JsObject[T] extends js.Object {
-  def call[R](selectFunc: T => R): R = macro JsObjectMacroImpl.selectImpl[R]
+class JsObject[T] extends js.Object { jsObjectSelf =>
+  def call[R](selectFunc: T => R): R = macro JsObjectMacroImpl.selectImpl[T, R]
 }
 
 private class JsObjectMacroImpl(val c: whitebox.Context) {
 
   import c.universe._
 
-  def selectImpl[R: c.WeakTypeTag](selectFunc: c.Tree): c.Tree = {
-    val tpe = weakTypeOf[R]
-
-    //c.info(c.enclosingPosition, showRaw(selectFunc), false)
+  def selectImpl[T: c.WeakTypeTag, R: c.WeakTypeTag](selectFunc: c.Tree): c.Tree = {
+    val tpe = weakTypeOf[T]
+    val returnType = weakTypeOf[R]
 
     val select = selectFunc match {
       case Function(_, tree) => tree
       case _ => c.abort(c.enclosingPosition, "Can only be select function like: _.fieldname")
     }
-    val names = recursivelySelect(select)
+    val firstName :: tailNames = recursivelySelect(select)
+    val firstType = tpe.decl(firstName).typeSignature
 
-    val dynamicSelect = names.foldLeft(q"this.asInstanceOf[js.Dynamic]": Tree) { (l, r) =>
-      q"$l.selectDynamic(${r.toString})"
-    }
+    val firstSelection =
+      q"${c.prefix}.asInstanceOf[js.Dynamic].selectDynamic(${firstName.toString}).asInstanceOf[$firstType]"
 
-    c.info(c.enclosingPosition, showCode(dynamicSelect), false)
+    val dynamicSelect = tailNames.foldLeft(firstSelection) { (l, r) => q"$l.${r.toTermName}" }
 
     q"""import scala.scalajs.js
-       $dynamicSelect.asInstanceOf[$tpe]"""
+       $dynamicSelect.asInstanceOf[$returnType]"""
   }
 
   @tailrec
