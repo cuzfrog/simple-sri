@@ -5,8 +5,9 @@ package sri.react.testutils.enzyme
 import sri.react.testutils.EnzymeSelector
 import sri.react.{JsPropsWrapper, JsStateWrapper, ReactElement, ReactNode}
 
+import scala.reflect.ClassTag
 import scala.scalajs.js
-import scala.scalajs.js.annotation.JSImport
+import scala.scalajs.js.annotation.{JSImport, JSName}
 import scala.scalajs.js.|
 
 @js.native
@@ -23,7 +24,7 @@ object Enzyme extends js.Object {
    * @return
    */
   def shallow[P, S](node: ReactElement,
-              options: js.UndefOr[js.Object] = js.undefined): ShallowWrapper[P, S] = js.native
+                    options: js.UndefOr[js.Object] = js.undefined): ShallowWrapper[P, S] = js.native
 
   /**
    *
@@ -48,7 +49,7 @@ object Enzyme extends js.Object {
    *                options.childContextTypes: (Object [optional]): Merged contextTypes for all children of the wrapper.<br>
    */
   def mount[P, S](node: ReactElement,
-            options: js.UndefOr[js.Object] = js.undefined): ReactWrapper[P, S] = js.native
+                  options: js.UndefOr[js.Object] = js.undefined): ReactWrapper[P, S] = js.native
 }
 
 /** Common methods */
@@ -241,11 +242,14 @@ trait EnzymeWrapper[P, S] extends js.Object {
    *
    * @param fn Function ( W node, Number index )
    */
-  def forEach(fn: js.Function2[W, Int, _]): W = js.native
+  @JSName("forEach") def js_forEach(fn: js.Function2[W, Int, _]): W = js.native
 
   /** Maps the current array of nodes to another array.
-   * Each node is passed in as a W to the map function. */
-  def map[A](fn: js.Function2[W, Int, A]): js.Array[A] = js.native
+   * Each node is passed in as a W to the map function.
+   *
+   * @param fn Function ( ShallowWrapper node, Number index ) => Any
+   */
+  @JSName("map") def js_map[A](fn: js.Function2[W, Int, A]): js.Array[A] = js.native
 
   /**
    * Applies the provided reducing function to every node in the wrapper to reduce to a single value.
@@ -254,7 +258,7 @@ trait EnzymeWrapper[P, S] extends js.Object {
    * @param fn           (Function): A reducing function to be run for every node in the collection,
    *                     with the following arguments:
    *                     <br>
-   *                     value (T): The value returned by the previous invocation of this function<br>
+   *                     value (A): The value returned by the previous invocation of this function<br>
    *                     node (W): A wrapper around the current node being processed<br>
    *                     index (Number): The index of the current node being processed<br>
    * @param initialValue (T [optional]): If provided, this will be passed in as the first argument
@@ -262,8 +266,8 @@ trait EnzymeWrapper[P, S] extends js.Object {
    *                     If omitted, the first node will be provided and the iteration will
    *                     begin on the second node in the collection.
    */
-  def reduce[A, B](fn: js.Function3[A, W, Int, A],
-                   initialValue: js.UndefOr[A] = js.undefined): A = js.native
+  @JSName("reduce") def js_reduce[A, B](fn: js.Function3[A, W, Int, A],
+                                        initialValue: js.UndefOr[A] = js.undefined): A = js.native
 
   /** See reduce() */
   def reduceRight[A, B](fn: js.Function3[A, W, Int, A],
@@ -289,4 +293,22 @@ trait EnzymeWrapper[P, S] extends js.Object {
   /** Returns whether or not all of the nodes in the wrapper pass the provided predicate function. */
   def everyWhere(predicate: js.Function1[W, Boolean]): Boolean = js.native
 
+}
+
+private object EnzymeWrapper {
+  implicit final class OpsForJsFunctionMethod[P, S](val wrapper: EnzymeWrapper[P, S]) {
+    type W = wrapper.W
+
+    def map[A: ClassTag](fn: W => A): Array[A] = {
+      wrapper.js_map[A]((node: W, _: Int) => fn(node)).toArray
+    }
+
+    def forEach[A: ClassTag](fn: W => A): W = {
+      wrapper.js_forEach((node: W, _: Int) => fn(node))
+    }
+
+    def reduce[A, B](fn: (A, W) => A, initialValue: js.UndefOr[A] = js.undefined): A = {
+      wrapper.js_reduce[A, B]((value: A, node: W, _: Int) => fn(value, node))
+    }
+  }
 }

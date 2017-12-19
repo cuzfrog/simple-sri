@@ -8,7 +8,7 @@ Ported react version: 16
 
 ## Features
 
-* Simple style to build react component.
+* Simple style to build react component. 
 * Use [diode](https://diode.suzaku.io/) instead of redux to manage state.
 * Write your DOM tests side by side with [scala-jest](https://github.com/cuzfrog/scala-jest).
 
@@ -91,9 +91,8 @@ You can find examples in `tests` sub-project.
 
 ## Document
 
-* Define component
-* Test component (implementing)
-* Case class / js Object conversion
+* Component detail
+* Test (implementing)
 
 ## About
 

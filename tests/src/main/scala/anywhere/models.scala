@@ -15,7 +15,7 @@ case class FilterModel(filterValue: String,
                        filteredElements: Seq[String])
 
 object AppCircuit extends Circuit[RootModel] with ReactConnector[RootModel] {
-  override protected def initialModel: RootModel = RootModel(
+  override protected val initialModel: RootModel = RootModel(
     FilterModel(
       filterValue = "",
       filteredElements = Constants.elements)
@@ -23,10 +23,12 @@ object AppCircuit extends Circuit[RootModel] with ReactConnector[RootModel] {
 
   private val filterHandler = new ActionHandler(zoomTo(_.filterModel)) {
     override protected def handle: PartialFunction[Any, ActionResult[RootModel]] = {
-      case FilterChange(v) => updated(
-        FilterModel(filterValue = v,
-          filteredElements = Constants.elements.filter(e => v.isEmpty || e.contains(v)))
-      )
+      case FilterChange(v) =>
+        updated(
+          FilterModel(filterValue = v,
+            filteredElements = Constants.elements.filter(e => v.isEmpty || e.contains(v)))
+        )
+      case Reset => updated(initialModel.filterModel)
     }
   }
 
