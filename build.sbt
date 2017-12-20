@@ -42,7 +42,7 @@ val tests = project.dependsOn(root, `sri-diode-connector`, `test-utils` % Test)
   .enablePlugins(ScalaJSPlugin)
   .settings(commonSettings)
   .settings(
-    scalaJSLinkerConfig ~= {_.withModuleKind(ModuleKind.CommonJSModule)},
+    scalaJSLinkerConfig ~= { _.withModuleKind(ModuleKind.CommonJSModule) },
     scalaJSUseMainModuleInitializer := true,
     libraryDependencies ++= Seq(
       "io.suzaku" %%% "diode" % "1.1.2",
@@ -66,14 +66,15 @@ onLoad in Global := {
 //release:
 import ReleaseTransformations._
 
-inThisBuild(List(
-  pgpReadOnly := false,
-  pgpSecretRing := baseDirectory.value / "project" / "codesigning.asc",
-  pgpPassphrase := sys.env.get("PGP_PASS").map(_.toArray),
-  releaseProcess := Seq[ReleaseStep](
-    checkSnapshotDependencies,
-    releaseStepCommand("pgp-cmd recv-key 895B79DB hkp://keyserver.ubuntu.com"),
-    releaseStepCommand("publishSigned"),
-    releaseStepCommand("sonatypeRelease")
-  )
-))
+pgpReadOnly := false
+pgpSecretRing := baseDirectory.value / "project" / "codesigning.asc"
+pgpPassphrase := sys.env.get("PGP_PASS").map(_.toArray)
+releaseProcess := Seq[ReleaseStep](
+  checkSnapshotDependencies,
+  releaseStepCommand("pgp-cmd recv-key 895B79DB hkp://keyserver.ubuntu.com"),
+  releaseStepCommand("publishSigned"),
+  releaseStepCommand("sri-diode-connector/publishSigned"),
+  releaseStepCommand("test-utils/publishSigned"),
+  releaseStepCommand("sonatypeReleaseAll")
+)
+

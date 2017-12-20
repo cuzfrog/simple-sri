@@ -17,16 +17,15 @@ Ported react version: 16
 ## Setup
 
 Dependencies:
-
-    "com.github.cuzfrog" %%% "simple-sri" % "version"
+```scala
+val sriVersion = "0.2.0"
+libraryDependencies ++= Seq(
+    "com.github.cuzfrog" %%% "simple-sri" % sriVersion
+    "com.github.cuzfrog" %%% "simple-sri-diode" % sriVersion //Diode connector
+    "com.github.cuzfrog" %%% "simple-sri-test-utils" % sriVersion % Test
+)
+```
     
-Diode connector:
-
-    "com.github.cuzfrog" %%% "simple-sri-diode" % "version"
-
-Test utilities:
-
-    "com.github.cuzfrog" %%% "simple-sri-test-utils" % "version" % Test
 
 ## Example
 

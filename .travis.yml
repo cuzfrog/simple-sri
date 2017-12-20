@@ -33,7 +33,7 @@ before_deploy:
 deploy:
   skip_cleanup: true
   provider: script
-  script: sbt release sri-diode-connector/release test-utils/release
+  script: sbt release
   on:
     all_branches: true
     tags: true

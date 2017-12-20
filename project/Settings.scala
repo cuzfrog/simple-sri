@@ -5,8 +5,6 @@ import com.github.cuzfrog.sbttmpfs.SbtTmpfsPlugin.autoImport._
 import org.scalajs.sbtplugin.ScalaJSPlugin.autoImport._
 import com.typesafe.sbt.pgp.PgpKeys._
 
-import scala.sys.process.Process
-
 object Settings {
   val commonSettings = Seq(
     scalacOptions ++= Seq(
@@ -37,8 +35,8 @@ object Settings {
     ),
     scmInfo := Some(
       ScmInfo(
-        url("https://github.com/cuzfrog/scala-jest"),
-        "scm:git@github.com:cuzfrog/scala-jest.git"
+        url("https://github.com/cuzfrog/simple-sri"),
+        "scm:git@github.com:cuzfrog/simple-sri.git"
       )
     ),
     developers := List(
@@ -62,13 +60,4 @@ object Settings {
   private def withOverwrite(config: PublishConfiguration, isSnapshot: Boolean) = {
     config.withOverwrite(isSnapshot)
   }
-
-  val manualTriggerJestSettings = Seq(
-    runJest := (runJest triggeredBy (test in Test)).value,
-    runJest := {
-      val logger = sLog.value
-      val output = Process("npm test -- --colors") !! logger
-      logger.info(output)
-    }
-  )
 }
