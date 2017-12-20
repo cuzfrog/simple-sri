@@ -6,7 +6,7 @@ import sri.web.vdom.tagsPrefix_<^._
 
 class FilterInput extends ComponentP[FilterInput.Props] {
   override def render(): ReactRenders = {
-    println(s"filter input rendered with value: ${props.value}")
+    println(s"filter input rendered with value: '${props.value}'")
     <.input(
       ^.value := props.value,
       ^.onChange := props.onChange
@@ -22,7 +22,7 @@ object FilterInput {
       def value: String = proxy().filterValue
       val onChange: ReactEventI => Unit = (event: ReactEventI) => {
         val v = event.target.value
-        println(s"filter input event! $v | $value")
+        println(s"filter input event! received value: '$v' | old value: '$value'")
         event.defaultPrevented
         proxy.dispatch(FilterChange(v))
       }

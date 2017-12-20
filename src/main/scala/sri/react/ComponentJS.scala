@@ -30,7 +30,7 @@ private sealed abstract class ComponentJS[P, S] extends js.Object {
   var state: JsState = js.native
 }
 
-// ----- Real React component -----
+/** ----- Real React component ----- */
 private final class PrototypeComponent
 [P <: AnyRef, S <: AnyRef, C <: BaseComponent {type Props = P; type State = S}]
 (val props: JsPropsWrapper[P]) extends ComponentJS[P, S] {

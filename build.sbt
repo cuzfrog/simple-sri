@@ -42,13 +42,13 @@ val tests = project.dependsOn(root, `sri-diode-connector`, `test-utils` % Test)
   .enablePlugins(ScalaJSPlugin)
   .settings(commonSettings)
   .settings(
-    scalaJSLinkerConfig ~= { _.withModuleKind(ModuleKind.CommonJSModule) },
+    scalaJSLinkerConfig ~= {_.withModuleKind(ModuleKind.CommonJSModule)},
     scalaJSUseMainModuleInitializer := true,
     libraryDependencies ++= Seq(
       "io.suzaku" %%% "diode" % "1.1.2",
       "org.scala-js" %%% "scalajs-dom" % "0.9.4",
       "io.scalajs" %%% "nodejs" % "0.4.2" % Test,
-      "com.github.cuzfrog" %%% "sjest" % "0.1.3-SNAPSHOT" % Test
+      "com.github.cuzfrog" %%% "sjest" % "0.2.0-SNAPSHOT" % Test
     ),
     testFrameworks += jestFramework,
     testOptions += Tests.Argument(jestFramework,

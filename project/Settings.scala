@@ -5,6 +5,8 @@ import com.github.cuzfrog.sbttmpfs.SbtTmpfsPlugin.autoImport._
 import org.scalajs.sbtplugin.ScalaJSPlugin.autoImport._
 import com.typesafe.sbt.pgp.PgpKeys._
 
+import scala.sys.process.Process
+
 object Settings {
   val commonSettings = Seq(
     scalacOptions ++= Seq(
@@ -14,8 +16,8 @@ object Settings {
       "-P:scalajs:sjsDefinedByDefault"
     ),
     resolvers ++= Seq(
-//      Resolver.bintrayRepo("cuzfrog", "maven"),
-//      Opts.resolver.sonatypeSnapshots
+      //      Resolver.bintrayRepo("cuzfrog", "maven"),
+      //      Opts.resolver.sonatypeSnapshots
     ),
     organization := "com.github.cuzfrog",
     licenses += ("Apache-2.0", url("http://www.opensource.org/licenses/apache2.0.php")),
@@ -60,4 +62,13 @@ object Settings {
   private def withOverwrite(config: PublishConfiguration, isSnapshot: Boolean) = {
     config.withOverwrite(isSnapshot)
   }
+
+  val manualTriggerJestSettings = Seq(
+    runJest := (runJest triggeredBy (test in Test)).value,
+    runJest := {
+      val logger = sLog.value
+      val output = Process("npm test -- --colors") !! logger
+      logger.info(output)
+    }
+  )
 }
