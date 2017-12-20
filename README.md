@@ -1,6 +1,8 @@
 # Simple Scalajs-React-Interface
 [![Build Status](https://travis-ci.org/cuzfrog/simple-sri.svg?branch=master)](https://travis-ci.org/cuzfrog/simple-sri)
 [![Scala.js](https://www.scala-js.org/assets/badges/scalajs-0.6.17.svg)](https://www.scala-js.org)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.cuzfrog/simple-sri_sjs0.6_2.12/badge.svg)](https://search.maven.org/#search%7Cga%7C1%7Csimple-sri)
+
 
 Lightweight scalajs react solution.
 
@@ -16,15 +18,15 @@ Ported react version: 16
 
 Dependencies:
 
-    "com.github.cuzfrog" %%% "simple-sri" % "0.2.0-SNAPSHOT"
+    "com.github.cuzfrog" %%% "simple-sri" % "version"
     
 Diode connector:
 
-    "com.github.cuzfrog" %%% "simple-sri-diode" % "0.2.0-SNAPSHOT"
+    "com.github.cuzfrog" %%% "simple-sri-diode" % "version"
 
 Test utilities:
 
-    "com.github.cuzfrog" %%% "simple-sri-test-utils" % "0.2.0-SNAPSHOT" % Test
+    "com.github.cuzfrog" %%% "simple-sri-test-utils" % "version" % Test
 
 ## Example
 
@@ -103,7 +105,15 @@ You can find examples in `tests` sub-project.
 
 #### Component detail
 
+A scala class wrapped in a `PrototypeComponent`, delegating functionalities to each other.
+Thus js concept has been split from the client.
+
 #### Test
+
+See examples in project `tests`.
+
+Live example: run sbt `tests/fastOptJS`, then `npm start`,
+ a `FilterList` could be accessed on localhost:8080
 
 ## About
 

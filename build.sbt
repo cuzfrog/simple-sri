@@ -2,7 +2,7 @@ import Settings._
 
 shellPrompt in ThisBuild := { state => Project.extract(state).currentRef.project + "> " }
 
-version in ThisBuild := "0.2.0-SNAPSHOT"
+version in ThisBuild := "0.2.0"
 scalaVersion in ThisBuild := "2.12.4"
 crossScalaVersions in ThisBuild := Seq("2.12.4")
 
@@ -48,7 +48,7 @@ val tests = project.dependsOn(root, `sri-diode-connector`, `test-utils` % Test)
       "io.suzaku" %%% "diode" % "1.1.2",
       "org.scala-js" %%% "scalajs-dom" % "0.9.4",
       "io.scalajs" %%% "nodejs" % "0.4.2" % Test,
-      "com.github.cuzfrog" %%% "sjest" % "0.2.0-SNAPSHOT" % Test
+      "com.github.cuzfrog" %%% "sjest" % "0.2.0" % Test
     ),
     testFrameworks += jestFramework,
     testOptions += Tests.Argument(jestFramework,

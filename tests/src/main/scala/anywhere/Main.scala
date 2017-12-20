@@ -8,7 +8,7 @@ import sri.web.ReactDOM
 object Main {
   def main(args: Array[String]): Unit = {
     try {
-      ReactDOM.render(BasicInput(), dom.document.getElementById("app"))
+      ReactDOM.render(FilterList(), dom.document.getElementById("app"))
       println("Client render completed.")
 
     } catch {

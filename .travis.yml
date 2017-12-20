@@ -19,7 +19,7 @@ install:
 
 script:
   - npm install
-  - sbt -Dfile.encoding=UTF8 -J-XX:ReservedCodeCacheSize=256M -J-Xms1024M +tests/test
+  - sbt -Dfile.encoding=UTF8 -J-XX:ReservedCodeCacheSize=256M -J-Xms1024M "tests/testOnly -- -silentOnPass"
 
 before_cache:
   # Cleanup the cached directories to avoid unnecessary cache updates
