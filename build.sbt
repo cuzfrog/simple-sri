@@ -2,13 +2,13 @@ import Settings._
 
 shellPrompt in ThisBuild := { state => Project.extract(state).currentRef.project + "> " }
 
-version in ThisBuild := "0.2.1-SNAPSHOT"
+version in ThisBuild := "0.3.0-SNAPSHOT"
 scalaVersion in ThisBuild := "2.12.4"
 crossScalaVersions in ThisBuild := Seq("2.12.4")
 
 val root = project.in(file("."))
-  .enablePlugins(ScalaJSPlugin)
-  .settings(commonSettings, publicationSettings, readmeVersionSettings)
+  .enablePlugins(ScalaJSPlugin, ScalaJsMap)
+  .settings(commonSettings, publicationSettings)
   .settings(
     name := "simple-sri",
     libraryDependencies ++= Seq(
@@ -18,8 +18,8 @@ val root = project.in(file("."))
   )
 
 val `sri-diode-connector` = project.dependsOn(root)
-  .enablePlugins(ScalaJSPlugin)
-  .settings(commonSettings, publicationSettings, readmeVersionSettings)
+  .enablePlugins(ScalaJSPlugin, ScalaJsMap)
+  .settings(commonSettings, publicationSettings)
   .settings(
     name := "simple-sri-diode",
     libraryDependencies ++= Seq(
@@ -28,8 +28,8 @@ val `sri-diode-connector` = project.dependsOn(root)
   )
 
 val `test-utils` = project.dependsOn(root)
-  .enablePlugins(ScalaJSPlugin)
-  .settings(commonSettings, publicationSettings, readmeVersionSettings)
+  .enablePlugins(ScalaJSPlugin, ScalaJsMap)
+  .settings(commonSettings, publicationSettings)
   .settings(
     name := "simple-sri-test-utils",
     libraryDependencies ++= Seq(

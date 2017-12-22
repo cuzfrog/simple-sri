@@ -43,7 +43,6 @@ trait ReactConnector[M <: AnyRef] { circuit: Circuit[M] =>
                                   (buildFunc: ModelProxy[S] => ReactElement): ReactElement = {
     val wrapFunc: () => ReactElement = () => wrap(zoomFunc)(buildFunc)
     val subscrFunc = circuit.subscribe(circuit.zoom(zoomFunc)) _
-    CreateElement[ContainerComponent[M, S]](new ContainerComponent)(
-      ContainerComponent.Props(subscrFunc, wrapFunc))
+    CreateElement[ContainerComponent[M, S]](ContainerComponent.Props(subscrFunc, wrapFunc))
   }
 }

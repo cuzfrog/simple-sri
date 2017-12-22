@@ -25,7 +25,7 @@ object ReactConnectorTest extends JestSuite {
       val increment = () => proxy.dispatch(Increment())
       val decrement = () => proxy.dispatch(Decrement())
       val reset = () => proxy.dispatch(Reset)
-      CreateElement(new TestComponent)(TestProps(proxy.value, increment, decrement, reset))
+      CreateElement[TestComponent](TestProps(proxy.value, increment, decrement, reset))
     }
     val appDomDiv = dom.document.createElement("div")
     ReactDOM.render(connectedElement, appDomDiv)

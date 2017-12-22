@@ -26,7 +26,7 @@ object FilterInput {
         event.defaultPrevented
         proxy.dispatch(FilterChange(v))
       }
-      CreateElement(new FilterInput)(Props(value, onChange))
+      CreateElement[FilterInput](Props(value, onChange))
     }
   }
 }
