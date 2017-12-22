@@ -18,7 +18,7 @@ Ported react version: 16
 
 Dependencies:
 ```scala
-val sriVersion = "0.2.1"
+val sriVersion = "0.3.0"
 libraryDependencies ++= Seq(
     "com.github.cuzfrog" %%% "simple-sri" % sriVersion,
     "com.github.cuzfrog" %%% "simple-sri-diode" % sriVersion, //Diode connector
@@ -52,7 +52,7 @@ class BasicInput extends Component[BasicInput.Props, BasicInput.State] {
 }
 
 object BasicInput {
-  def apply(props: Props = Props()): ReactElement = CreateElement(new BasicInput)(props)
+  def apply(props: Props = Props()): ReactElement = CreateElement[BasicInput](props)
 
   case class State(value: String)
   case class Props()
@@ -92,7 +92,7 @@ object FilterInput {
         event.defaultPrevented
         proxy.dispatch(FilterChange(v))
       }
-      CreateElement(new FilterInput)(Props(value, onChange))
+      CreateElement[FilterInput](Props(value, onChange))
     }
   }
 }
@@ -102,10 +102,19 @@ You can find examples in `tests` sub-project.
 
 ## Document
 
-#### Component detail
+#### Component
 
 A scala class wrapped in a `PrototypeComponent`, delegating functionalities to each other.
-Thus js concept has been split from the client.
+Thus js native methods have been isolated from the client.
+
+Component can be abstract and have parameters, cause they are common classes:
+```scala
+abstract class AbstractComponent[P,A](args:A) extends ComponentP[P]{...}
+```
+But concrete component that is to be instantiated to react element cannot have arguments. 
+
+Factory `CreateElement` provides ways to create react element.
+Clients do not need to manage instances.
 
 #### Test
 
